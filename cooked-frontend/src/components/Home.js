@@ -1,15 +1,12 @@
 import React from "react";
 import '../css/Home.css';
 
+import HomeNavBar from "./HomeNavBar";
+
 function Home() {
     return (
         <div className="home">
-        <header className="header">
-            <h1>Cooked</h1>
-            <nav>
-            <a href="/login">Login</a>
-            </nav>
-        </header>
+        <HomeNavBar />
 
         <main className="hero">
         <h1>hi</h1>
