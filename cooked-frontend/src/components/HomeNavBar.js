@@ -1,4 +1,5 @@
 import React from "react";
+import '../css/HomeNavBar.css';
 
 function HomeNavBar() {
     return (
