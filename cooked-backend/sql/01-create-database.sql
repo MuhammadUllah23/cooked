@@ -1,0 +1,4 @@
+CREATE DATABASE IF NOT EXISTS cooked_db
+    WITH OWNER = postgres
+    ENCODING = 'UTF8'
+    CONECTION LIMIT = -1;
