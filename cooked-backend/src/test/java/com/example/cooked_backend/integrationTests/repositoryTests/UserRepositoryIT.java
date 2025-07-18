@@ -1,24 +1,30 @@
-package com.integrationTests.repositoryTests;
+package com.example.cooked_backend.integrationTests.repositoryTests;
 
+import com.example.cooked_backend.config.DotenvTestConfig;
 import com.example.cooked_backend.model.User;
 import com.example.cooked_backend.repository.UserRepository;
 
-import org.hibernate.id.uuid.UuidGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-@DataJpaTest
+
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+
+@SpringBootTest
+@ActiveProfiles("test")
+@Import(DotenvTestConfig.class)
 public class UserRepositoryIT {
 
     @Autowired
     private UserRepository userRepository;
 
-        @Test
+    @Test
     public void testCreateUser() {
         User user = new User();
         UUID userId = UUID.randomUUID();
