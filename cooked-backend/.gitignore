@@ -36,4 +36,5 @@ build/
 .env 
 
 ### Property Files ###
-**/application.properties
+application.properties
+application-test.properties
