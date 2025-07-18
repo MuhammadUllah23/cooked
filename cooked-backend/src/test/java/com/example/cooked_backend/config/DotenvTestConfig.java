@@ -1,8 +1,11 @@
 package com.example.cooked_backend.config;
 
+import org.springframework.context.annotation.Configuration;
+
 import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.annotation.PostConstruct;
 
+@Configuration
 public class DotenvTestConfig {
      @PostConstruct
     public void loadDotenv() {
