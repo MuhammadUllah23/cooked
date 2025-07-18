@@ -1,12 +1,12 @@
-package com.example.cooked_backend.integrationTests.repositoryTests;
+package com.example.cooked_backend.repository;
 
-import com.example.cooked_backend.config.DotenvTestConfig;
+import com.example.cooked_backend.containers.AbstractPostgresContainerTest;
+
 import com.example.cooked_backend.model.User;
 import com.example.cooked_backend.repository.UserRepository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -14,29 +14,25 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 
 @SpringBootTest
-@ActiveProfiles("test")
-@Import(DotenvTestConfig.class)
-public class UserRepositoryIT {
+public class UserRepositoryIT extends AbstractPostgresContainerTest {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository userRepository; 
 
     @Test
     public void testCreateUser() {
         User user = new User();
-        UUID userId = UUID.randomUUID();
 
-        user.setId(userId);
         user.setEmail("test@example.com");
+        user.setPassword("securePassword123");
         user.setFirstName("Test User");
+        user.setLastName("Doe");
         
         User savedUser = userRepository.save(user);
 
         assertThat(savedUser.getId()).isNotNull();
-        assertThat(savedUser.getId()).isEqualTo(userId);
         assertThat(savedUser.getEmail()).isEqualTo("test@example.com");
         assertThat(savedUser.getFirstName()).isEqualTo("Test User");
     }
@@ -45,11 +41,11 @@ public class UserRepositoryIT {
     public void testUpdateUser() {
         // First create and save a user
         User user = new User();
-        UUID userId = UUID.randomUUID();
 
-        user.setId(userId);
         user.setEmail("update@example.com");
+        user.setPassword("securePassword123");
         user.setFirstName("Initial Name");
+        user.setLastName("Doe");
         User savedUser = userRepository.save(user);
 
         // Update the user name
@@ -63,7 +59,9 @@ public class UserRepositoryIT {
     public void testFindUserById() {
         User user = new User();
         user.setEmail("find@example.com");
+        user.setPassword("securePassword123");
         user.setFirstName("Find User");
+        user.setLastName("Doe");
         User savedUser = userRepository.save(user);
 
         Optional<User> foundUser = userRepository.findById(savedUser.getId());
@@ -74,14 +72,14 @@ public class UserRepositoryIT {
     @Test
     public void testSaveAndFindByEmail() {
         User user = new User();
-        user.setEmail("test@example.com");
+        user.setEmail("test2@example.com");
         user.setPassword("securePassword123");
         user.setFirstName("John");
         user.setLastName("Doe");
 
         userRepository.save(user);
 
-        Optional<User> found = userRepository.findByEmail("test@example.com");
+        Optional<User> found = userRepository.findByEmail("test2@example.com");
         assertThat(found).isPresent();
         assertThat(found.get().getFirstName()).isEqualTo("John");
     }
