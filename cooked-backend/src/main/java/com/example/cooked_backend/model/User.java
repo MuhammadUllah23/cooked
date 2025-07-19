@@ -15,6 +15,10 @@ public class User {
 
     @Id
     @GeneratedValue(generator = "UUID")
+    @org.hibernate.annotations.GenericGenerator(
+        name = "UUID",
+        strategy = "org.hibernate.id.UUIDGenerator"
+    )
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
@@ -37,7 +41,11 @@ public class User {
 
     @Column(name = "last_name", nullable = false, length = 100)
     private String lastName;
-    
+
+
+    // no-args constructor
+    public User() {
+    }
 
     public UUID getId() { return id; }
     public void setId(UUID id) { this.id = id; }
