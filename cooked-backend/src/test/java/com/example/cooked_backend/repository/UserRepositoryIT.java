@@ -3,13 +3,11 @@ package com.example.cooked_backend.repository;
 import com.example.cooked_backend.containers.AbstractPostgresContainerTest;
 
 import com.example.cooked_backend.model.User;
-import com.example.cooked_backend.repository.UserRepository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
