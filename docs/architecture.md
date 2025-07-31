@@ -21,10 +21,6 @@ Data is stored in a **PostgreSQL** database. Database schema is managed using **
 
 A **Redis** cache is used to store frequently accessed data, reducing the need for repeated database queries and improving overall performance.
 
-### 📬 Notifications
-
-The backend integrates an **Email/Notification Service**, which can send system-generated messages such as registration confirmations or alerts.
-
 ### 🐳 Dockerized Stack
 
 The entire stack runs in a **Docker Compose** environment to ensure consistency across development and deployment. Services include:
@@ -42,7 +38,8 @@ The entire stack runs in a **Docker Compose** environment to ensure consistency 
 
 ## 📌 Related Documentation
 
-- [Features & Status](./FEATURES.md)
-- [Getting Started Guide](./GETTING_STARTED.md)
-- [API Reference](./API_REFERENCE.md)
-- [Migration Scripts](./db/migrations/)
+- [README](../README.md)
+- [API Reference](./api-spec.md)
+- [Setup & Installation Guide](./setup.md)
+- [User Guide](./user-guide.md)
+- [Database Schema](./database-schema.md)
