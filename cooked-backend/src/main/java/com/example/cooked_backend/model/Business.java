@@ -15,19 +15,18 @@ public class Business {
     @GeneratedValue
     private UUID id;
 
-    // Just store userId as UUID, no User object here
     @Column(name = "user_id", nullable = false)
     private UUID userId;
 
     @Column(nullable = false, length = 100)
     private String name;
 
-    @Column(name = "created_at", updatable = false)
     @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
     private Instant createdAt;
 
-    @Column(name = "updated_at")
     @UpdateTimestamp
+    @Column(name = "updated_at")
     private Instant updatedAt;
 
     // Constructor using only userId and name
@@ -58,7 +57,15 @@ public class Business {
         return createdAt;
     }
 
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
     public Instant getUpdatedAt() {
         return updatedAt;
+    }
+
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
