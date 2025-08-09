@@ -11,7 +11,7 @@ import com.example.cooked_backend.model.User;
 
 @Service
 public class DefaultUserService implements UserService {
-        private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
     // Constructor Injection
     public DefaultUserService(UserRepository userRepository) {
@@ -25,7 +25,13 @@ public class DefaultUserService implements UserService {
 
     @Override
     public Optional<User> getUserById(UUID id) {
-        return userRepository.findById(id);
+        try {
+            Optional<User> user = userRepository.findById(id);
+            return  user;
+        }
+        catch (Exception e) {
+            throw new RuntimeException("User not found with given user id: " + id, e);
+        }
     }
 
     @Override
