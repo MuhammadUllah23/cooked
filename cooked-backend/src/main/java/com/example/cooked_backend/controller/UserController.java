@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.cooked_backend.service.UserService;
 import com.example.cooked_backend.dto.request.UserRequest;
 import com.example.cooked_backend.dto.response.UserResponse;
+import com.example.cooked_backend.model.User;
 
 import jakarta.validation.Valid;
 

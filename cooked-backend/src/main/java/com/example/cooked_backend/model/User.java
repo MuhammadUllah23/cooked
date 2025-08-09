@@ -4,8 +4,10 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.example.cooked_backend.dto.request.UserRequest;
+import com.example.cooked_backend.util.BCryptHashing;
+
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 
@@ -45,6 +47,13 @@ public class User {
 
     // no-args constructor
     public User() {
+    }
+
+    public User(UserRequest userRequest) {
+        this.firstName = userRequest.getFirstName();
+        this.lastName = userRequest.getLastName();
+        this.email = userRequest.getEmail();
+        this.password = BCryptHashing.hashPassword(userRequest.getPassword());
     }
 
     public UUID getId() { 

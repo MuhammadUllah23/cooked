@@ -11,6 +11,7 @@ import com.example.cooked_backend.repository.UserRepository;
 import jakarta.persistence.EntityExistsException;
 
 import com.example.cooked_backend.dto.request.UserRequest;
+import com.example.cooked_backend.dto.response.UserResponse;
 import com.example.cooked_backend.model.User;
 
 @Service
@@ -36,11 +37,15 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public User createUser(UserRequest userRequest) {
-        validateUserExists(userRequest.getEmail());
-        User user = new User();
-        
-        return userRepository.save(user);
+    public UserResponse createUser(UserRequest userRequest) {
+        checkUserAlreadyExistsByEmail(userRequest.getEmail());
+        User user = new User(userRequest);
+
+        User createdUser = userRepository.save(user);
+
+        UserResponse userResponse = new UserResponse(user);
+
+        return userResponse;
     }
 
     @Override
@@ -48,7 +53,7 @@ public class DefaultUserService implements UserService {
         userRepository.deleteById(id);
     }
 
-    private void validateUserExists(String email) {
+    private void checkUserAlreadyExistsByEmail(String email) {
         boolean userExists = userRepository.existsByEmail(email);
 
         if (userExists == true) {

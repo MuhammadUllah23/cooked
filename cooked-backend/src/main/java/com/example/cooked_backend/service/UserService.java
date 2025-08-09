@@ -5,11 +5,12 @@ import java.util.UUID;
 import java.util.List;
 
 import com.example.cooked_backend.dto.request.UserRequest;
+import com.example.cooked_backend.dto.response.UserResponse;
 import com.example.cooked_backend.model.User;
 
 public interface UserService {
     List<User> getAllUsers();
     Optional<User> getUserById(UUID id);
-    User createUser(UserRequest user);
+    UserResponse createUser(UserRequest user);
     void deleteUserById(UUID id);
 }
