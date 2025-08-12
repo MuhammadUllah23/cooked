@@ -1,12 +1,33 @@
 package com.example.cooked_backend.service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
+
+import com.example.cooked_backend.model.Business;
+import com.example.cooked_backend.repository.BusinessRepository;
+
 
 @Service
 public class DefaultBusinessService implements BusinessService {
 
+	private final BusinessRepository businessRepository;
+
+	// Constructor Injection
+	public DefaultBusinessService(BusinessRepository businessRepository) {
+		this.businessRepository = businessRepository;
+	}
+
 	@Override
-	public Business getBusinessById(UUID id) {
+	public Optional<Business> getBusinessById(UUID id) {
+		Optional<Business> business = businessRepository.findById(id)
+		return business;
+	}
+
+	@Override
+	public Business createBusiness(Business business) {
 		// TODO: implement this method
 		return null;
 	}
@@ -22,9 +43,4 @@ public class DefaultBusinessService implements BusinessService {
 		return null;
 	}
 
-	@Override
-	public Business createUser(Business business) {
-		// TODO: implement this method
-		return null;
-	}
 }

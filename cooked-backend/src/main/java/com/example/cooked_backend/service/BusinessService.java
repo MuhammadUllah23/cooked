@@ -9,6 +9,6 @@ import com.example.cooked_backend.model.Business;
 public interface BusinessService {
     List<Business> getAllBusinessesByUserId(UUID userId);
     Optional<Business> getBusinessById(UUID id);
-    Business createUser(Business business);
+    Business createBusiness(Business business);
     void deleteBusinessById(UUID id);
 }
