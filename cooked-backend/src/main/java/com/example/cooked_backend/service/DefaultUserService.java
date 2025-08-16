@@ -24,16 +24,9 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-    @Override
     public Optional<User> getUserById(UUID id) {
-    
         Optional<User> user = userRepository.findById(id);
         return user;
-
     }
 
     @Override
@@ -43,7 +36,7 @@ public class DefaultUserService implements UserService {
 
         User createdUser = userRepository.save(user);
 
-        UserResponse userResponse = new UserResponse(user);
+        UserResponse userResponse = new UserResponse(createdUser);
 
         return userResponse;
     }

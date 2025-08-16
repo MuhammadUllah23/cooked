@@ -9,7 +9,6 @@ import com.example.cooked_backend.dto.response.UserResponse;
 import com.example.cooked_backend.model.User;
 
 public interface UserService {
-    List<User> getAllUsers();
     Optional<User> getUserById(UUID id);
     UserResponse createUser(UserRequest user);
     void deleteUserById(UUID id);
