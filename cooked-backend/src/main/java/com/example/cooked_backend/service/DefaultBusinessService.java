@@ -21,8 +21,8 @@ public class DefaultBusinessService implements BusinessService {
 	}
 
 	@Override
-	public Optional<Business> getBusinessById(UUID id) {
-		Optional<Business> business = businessRepository.findById(id)
+	public Optional<Business> getBusinessById(UUID businessId) {
+		Optional<Business> business = businessRepository.findById(businessId);
 		return business;
 	}
 
@@ -33,14 +33,13 @@ public class DefaultBusinessService implements BusinessService {
 	}
 
 	@Override
-	public void deleteBusinessById(UUID id) {
+	public void deleteBusinessById(UUID businessId) {
 		// TODO: implement this method
 	}
 
 	@Override
 	public List<Business> getAllBusinessesByUserId(UUID userId) {
-		// TODO: implement this method
-		return null;
+		return businessRepository.findAllByUserId(userId).orElse(List.of());
 	}
 
 }
