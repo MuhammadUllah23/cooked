@@ -1,6 +1,5 @@
 package com.example.cooked_backend.model;
 
-import com.example.cooked_backend.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -36,7 +35,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email; // Spring will treat email as "username"
+        return email; 
     }
 
     @Override
