@@ -31,6 +31,7 @@ public class JwtUtil {
      * 
      * @return 
      */
+    @SuppressWarnings("deprecation")
     public String generateToken(UUID userId, String email) {
 
         return Jwts.builder()
@@ -68,6 +69,7 @@ public class JwtUtil {
      * @param token
      * @return
      */
+    @SuppressWarnings("deprecation")
     public boolean validateToken(String token) {
         try {
             Jwts.parser()
@@ -85,6 +87,7 @@ public class JwtUtil {
      * @param token
      * @return
      */
+    @SuppressWarnings("deprecation")
     private Claims extractClaims(String token) {
         return Jwts.parser()
                 .setSigningKey(getSigningKey())
