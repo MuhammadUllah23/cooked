@@ -2,7 +2,6 @@ package com.example.cooked_backend.service;
 
 import java.util.Optional;
 import java.util.UUID;
-import java.util.List;
 
 import com.example.cooked_backend.dto.request.UserRequest;
 import com.example.cooked_backend.dto.response.UserResponse;
