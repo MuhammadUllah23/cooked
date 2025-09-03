@@ -2,7 +2,6 @@ package com.example.cooked_backend.service;
 
 import java.util.Optional;
 import java.util.UUID;
-import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -34,9 +33,10 @@ public class DefaultUserService implements UserService {
         checkUserAlreadyExistsByEmail(userRequest.getEmail());
         User user = new User(userRequest);
 
-        User createdUser = userRepository.save(user);
+        // User createdUser = userRepository.save(user);
+        // UserResponse userResponse = new UserResponse(createdUser);
 
-        UserResponse userResponse = new UserResponse(createdUser);
+        UserResponse userResponse = new UserResponse(user);
 
         return userResponse;
     }
