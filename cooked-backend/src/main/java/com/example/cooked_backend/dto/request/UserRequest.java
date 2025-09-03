@@ -3,22 +3,27 @@ package com.example.cooked_backend.dto.request;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
 
 public class UserRequest {
 
+    @NotNull(message = "Email is required")
     @Email(message = "Email should be valid")
     @NotBlank(message = "Email is required")
     @Size(max = 255, message = "Email must be less than or equal to 255 characters")
     private String email;
 
+    @NotNull(message = "Password is required")
     @NotBlank(message = "Password is required")
     @Size(min = 8, max = 255, message = "Password must be between 8 and 255 characters")
     private String password;
 
+    @NotNull(message = "First name is required")
     @NotBlank(message = "First name is required")
     @Size(max = 100, message = "First name must be less than or equal to 100 characters")
     private String firstName;
 
+    @NotNull(message = "Last name is required")
     @NotBlank(message = "Last name is required")
     @Size(max = 100, message = "Last name must be less than or equal to 100 characters")
     private String lastName;
