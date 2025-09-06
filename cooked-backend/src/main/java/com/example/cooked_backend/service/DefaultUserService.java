@@ -33,10 +33,8 @@ public class DefaultUserService implements UserService {
         checkUserAlreadyExistsByEmail(userRequest.getEmail());
         User user = new User(userRequest);
 
-        // User createdUser = userRepository.save(user);
-        // UserResponse userResponse = new UserResponse(createdUser);
-
-        UserResponse userResponse = new UserResponse(user);
+        User createdUser = userRepository.save(user);
+        UserResponse userResponse = new UserResponse(createdUser);
 
         return userResponse;
     }
