@@ -3,6 +3,7 @@ package com.example.cooked_backend.service;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.example.cooked_backend.repository.UserRepository;
@@ -26,6 +27,14 @@ public class DefaultUserService implements UserService {
     public Optional<User> getUserById(UUID id) {
         Optional<User> user = userRepository.findById(id);
         return user;
+    }
+
+    @Override
+    public UserResponse getUserByEmail(String userEmail) {
+        User user = userRepository.findByEmail(userEmail)
+            .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + userEmail));
+            
+        return new UserResponse(user);
     }
 
     @Override
