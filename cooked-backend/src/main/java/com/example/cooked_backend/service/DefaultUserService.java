@@ -3,6 +3,7 @@ package com.example.cooked_backend.service;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +39,7 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
+    @Transactional
     public UserResponse createUser(UserRequest userRequest) {
         checkUserAlreadyExistsByEmail(userRequest.getEmail());
         User user = new User(userRequest);
@@ -49,6 +51,7 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteUserById(UUID id) {
         userRepository.deleteById(id);
     }
