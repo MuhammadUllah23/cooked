@@ -6,6 +6,8 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.example.cooked_backend.model.CustomUserDetails;
+
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
@@ -32,11 +34,11 @@ public class JwtUtil {
      * @return 
      */
     @SuppressWarnings("deprecation")
-    public String generateToken(UUID userId, String email) {
+    public String generateToken(CustomUserDetails userDetails) {
 
         return Jwts.builder()
-                .setSubject(userId.toString())
-                .claim("email", email)
+                .setSubject(userDetails.getId().toString())
+                .claim("email", userDetails.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
