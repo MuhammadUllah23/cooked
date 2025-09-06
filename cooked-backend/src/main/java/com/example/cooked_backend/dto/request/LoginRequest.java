@@ -15,6 +15,11 @@ public class LoginRequest {
     @NotBlank(message = "Password is required")
     private String password;
 
+    public LoginRequest(UserRequest userRequest) {
+        this.email = userRequest.getEmail();
+        this.password = userRequest.getPassword();
+    }
+
     // Getters and setters
     public String getEmail() {
         return email;
