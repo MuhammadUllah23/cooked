@@ -13,6 +13,7 @@ import jakarta.persistence.EntityExistsException;
 
 import com.example.cooked_backend.dto.request.UserRequest;
 import com.example.cooked_backend.dto.response.UserResponse;
+import com.example.cooked_backend.exception.AccountAlreadyExistsException;
 import com.example.cooked_backend.model.User;
 
 @Service
@@ -60,7 +61,7 @@ public class DefaultUserService implements UserService {
         boolean userExists = userRepository.existsByEmail(email);
 
         if (userExists == true) {
-            throw new EntityExistsException("An account already exists with the email " + email);
+            throw new AccountAlreadyExistsException(email);
         }
     }
 }
