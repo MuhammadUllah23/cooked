@@ -24,11 +24,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ServiceException.class)
     public ResponseEntity<Map<String, Object>> handleServiceException(ServiceException ex) {
         Map<String, Object> response = new HashMap<>();
-        response.put("code", ex.getErrorCode().name()); // e.g. USER_ALREADY_EXISTS
+        response.put("code", ex.getErrorCode().name());
         response.put("message", ex.getMessage());
         response.put("status", ex.getErrorCode().getStatus().value());
 
-        if (ex.getDetails() != null && !ex.getDetails().isEmpty()) {
+        if (!ex.getDetails().isEmpty()) {
             response.put("details", ex.getDetails());
         }
 

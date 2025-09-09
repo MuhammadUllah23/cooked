@@ -9,11 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.cooked_backend.repository.UserRepository;
 
-import jakarta.persistence.EntityExistsException;
-
 import com.example.cooked_backend.dto.request.UserRequest;
 import com.example.cooked_backend.dto.response.UserResponse;
-import com.example.cooked_backend.exception.AccountAlreadyExistsException;
+import com.example.cooked_backend.exception.ErrorCode;
+import com.example.cooked_backend.exception.ServiceException;
 import com.example.cooked_backend.model.User;
 
 @Service
@@ -61,7 +60,8 @@ public class DefaultUserService implements UserService {
         boolean userExists = userRepository.existsByEmail(email);
 
         if (userExists == true) {
-            throw new AccountAlreadyExistsException(email);
+            throw ServiceException.of(ErrorCode.USER_ALREADY_EXISTS)
+                        .addDetail("email", email);
         }
     }
 }

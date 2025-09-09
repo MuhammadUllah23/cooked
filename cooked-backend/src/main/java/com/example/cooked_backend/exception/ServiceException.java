@@ -6,20 +6,28 @@ import java.util.Map;
 public class ServiceException extends RuntimeException {
 
     private final ErrorCode errorCode;
-    private final Map<String, Object> details;
+    private final Map<String, Object> details = new HashMap<>();
 
-    public ServiceException(ErrorCode errorCode, Object... keyValuePairs) {
-        super(errorCode.getMessage());
+    private ServiceException(ErrorCode errorCode, String customMessage) {
+        // If customMessage is null, fall back to the default from ErrorCode
+        super(customMessage != null ? customMessage : errorCode.getMessage());
         this.errorCode = errorCode;
-        this.details = new HashMap<>();
+    }
 
-        if (keyValuePairs != null && keyValuePairs.length % 2 == 0) {
-            for (int i = 0; i < keyValuePairs.length; i += 2) {
-                String key = String.valueOf(keyValuePairs[i]);
-                Object value = keyValuePairs[i + 1];
-                this.details.put(key, value);
-            }
-        }
+    // Factory method without custom message
+    public static ServiceException of(ErrorCode errorCode) {
+        return new ServiceException(errorCode, null);
+    }
+
+    // Factory method with custom message
+    public static ServiceException of(ErrorCode errorCode, String customMessage) {
+        return new ServiceException(errorCode, customMessage);
+    }
+
+    // Add key-value pair detail
+    public ServiceException addDetail(String key, Object value) {
+        details.put(key, value);
+        return this; // allows chaining
     }
 
     public ErrorCode getErrorCode() {
