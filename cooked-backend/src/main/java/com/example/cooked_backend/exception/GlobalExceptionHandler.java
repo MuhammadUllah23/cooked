@@ -21,12 +21,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(AccountAlreadyExistsException.class)
-    public ResponseEntity<Map<String, Object>> handleAccountAlreadyExists(AccountAlreadyExistsException ex) {
-        Map<String, Object> errorResponse = new HashMap<>();
-        errorResponse.put("message", ex.getMessage()); // this contains your custom message
-        errorResponse.put("status", HttpStatus.CONFLICT.value());
-        errorResponse.put("code", "ACCOUNT_ALREADY_EXISTS"); // optional error code
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
-}
+    @ExceptionHandler(ServiceException.class)
+    public ResponseEntity<Map<String, Object>> handleServiceException(ServiceException ex) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("code", ex.getErrorCode().name()); // e.g. USER_ALREADY_EXISTS
+        response.put("message", ex.getMessage());
+        response.put("status", ex.getErrorCode().getStatus().value());
+
+        if (ex.getDetails() != null && !ex.getDetails().isEmpty()) {
+            response.put("details", ex.getDetails());
+        }
+
+        return ResponseEntity.status(ex.getErrorCode().getStatus()).body(response);
+    }
 }
