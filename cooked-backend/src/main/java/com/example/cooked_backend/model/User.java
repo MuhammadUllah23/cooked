@@ -44,6 +44,10 @@ public class User {
     @Column(name = "last_name", nullable = false, length = 100)
     private String lastName;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserRole role = UserRole.USER; 
+
 
     // no-args constructor
     public User() {
@@ -54,6 +58,7 @@ public class User {
         this.lastName = userRequest.getLastName();
         this.email = userRequest.getEmail();
         this.password = BCryptHashing.hashPassword(userRequest.getPassword());
+        this.role = UserRole.USER;
     }
 
     public UUID getId() { 
@@ -110,6 +115,14 @@ public class User {
 
     public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public UserRole getRole() { 
+        return role; 
+    }
+    
+    public void setRole(UserRole role) { 
+        this.role = role; 
     }
 	
 }
