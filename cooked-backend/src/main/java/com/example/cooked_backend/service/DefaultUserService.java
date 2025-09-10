@@ -43,9 +43,11 @@ public class DefaultUserService implements UserService {
     public UserResponse createUser(UserRequest userRequest) {
         checkUserAlreadyExistsByEmail(userRequest.getEmail());
         User user = new User(userRequest);
-
+        
         User createdUser = userRepository.save(user);
+
         UserResponse userResponse = new UserResponse(createdUser);
+        System.out.println("after user creation " + userResponse.toString());
 
         return userResponse;
     }

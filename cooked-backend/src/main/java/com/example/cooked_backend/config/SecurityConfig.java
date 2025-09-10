@@ -33,6 +33,8 @@ public class SecurityConfig {
         http.csrf().disable()
             .authorizeHttpRequests(auth -> auth
             .requestMatchers("/auth/**").permitAll()
+            // .requestMatchers("/admin/**").hasRole("ADMIN") 
+            // .requestMatchers("/user/**").hasAnyRole("USER")
             .anyRequest().authenticated())
             // Ensure Spring does not use sessions/cookies
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

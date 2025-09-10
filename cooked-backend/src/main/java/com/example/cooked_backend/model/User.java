@@ -45,8 +45,8 @@ public class User {
     private String lastName;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private UserRole role = UserRole.USER; 
+    @Column(name = "role", nullable = false, columnDefinition = "user_role")
+    private UserRole role; 
 
 
     // no-args constructor

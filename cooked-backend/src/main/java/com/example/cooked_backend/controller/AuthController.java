@@ -1,6 +1,7 @@
 package com.example.cooked_backend.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
@@ -25,9 +26,15 @@ public class AuthController {
     // CREATE user
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> registerAndLoginUser(@Valid @RequestBody UserRequest userRequest) {
-        defaultUserService.createUser(userRequest);
 
+        defaultUserService.createUser(userRequest);
+        
+
+        System.out.println("after user in controller");
         LoginRequest loginRequest = new LoginRequest(userRequest.getEmail(), userRequest.getPassword());
+
+        System.out.println("after user creation and login request " + loginRequest.toString());
+        
 
         AuthResponse authResponse = defaultAuthService.loginUser(loginRequest);
 
