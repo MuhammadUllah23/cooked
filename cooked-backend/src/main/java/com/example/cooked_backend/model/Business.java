@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.example.cooked_backend.dto.request.BusinessRequest;
+
 import java.time.Instant;
 import java.util.UUID;
 
@@ -30,9 +32,9 @@ public class Business {
     private Instant updatedAt;
 
     // Constructor using only userId and name
-    public Business(UUID userId, String name) {
-        this.userId = userId;
-        this.name = name;
+    public Business(BusinessRequest businessRequest) {
+        this.userId = businessRequest.getUserId();
+        this.name = businessRequest.getName();
     }
 
     // Getters and Setters
