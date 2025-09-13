@@ -43,9 +43,9 @@ public class User {
 
     @Column(name = "last_name", nullable = false, length = 100)
     private String lastName;
-
+    
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false, columnDefinition = "user_role")
+    @Column(name = "role", nullable = false)
     private UserRole role; 
 
 
