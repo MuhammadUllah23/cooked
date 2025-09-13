@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.example.cooked_backend.dto.request.BusinessRequest;
 import com.example.cooked_backend.model.Business;
 
 public interface BusinessService {
     List<Business> getAllBusinessesByUserId(UUID userId);
     Optional<Business> getBusinessById(UUID id);
-    Business createBusiness(Business business);
+    Business createBusiness(BusinessRequest businessRequest);
     void deleteBusinessById(UUID id);
 }

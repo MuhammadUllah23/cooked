@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.example.cooked_backend.dto.request.BusinessRequest;
 import com.example.cooked_backend.model.Business;
 import com.example.cooked_backend.repository.BusinessRepository;
 
@@ -27,14 +28,16 @@ public class DefaultBusinessService implements BusinessService {
 	}
 
 	@Override
-	public Business createBusiness(Business business) {
-		// TODO: implement this method
-		return null;
+	public Business createBusiness(BusinessRequest businessRequest) {
+		Business business = new Business(businessRequest);
+
+		Business createdBusiness =  businessRepository.save(business);
+		return createdBusiness;
 	}
 
 	@Override
 	public void deleteBusinessById(UUID businessId) {
-		// TODO: implement this method
+		businessRepository.deleteById(businessId);
 	}
 
 	@Override
