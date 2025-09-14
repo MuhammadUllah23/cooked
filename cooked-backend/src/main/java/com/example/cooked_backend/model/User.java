@@ -48,6 +48,9 @@ public class User {
     @Column(name = "role", nullable = false)
     private UserRole role; 
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "membership", nullable = false)
+    private UserMembership membership; 
 
     // no-args constructor
     public User() {
@@ -59,6 +62,7 @@ public class User {
         this.email = userRequest.getEmail();
         this.password = BCryptHashing.hashPassword(userRequest.getPassword());
         this.role = UserRole.USER;
+        this.membership = UserMembership.FREE;
     }
 
     public UUID getId() { 
@@ -125,4 +129,11 @@ public class User {
         this.role = role; 
     }
 	
+    public UserMembership getMembership() { 
+        return membership; 
+    }
+    
+    public void setMembership(UserMembership membership) { 
+        this.membership = membership; 
+    }
 }
