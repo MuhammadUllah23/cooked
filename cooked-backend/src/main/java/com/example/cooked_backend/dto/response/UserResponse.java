@@ -3,7 +3,7 @@ package com.example.cooked_backend.dto.response;
 import java.util.UUID;
 
 import com.example.cooked_backend.model.User;
-import com.example.cooked_backend.model.UserMembership;
+import com.example.cooked_backend.model.UserSubscription;
 import com.example.cooked_backend.model.UserRole;
 
 public class UserResponse {
@@ -12,7 +12,7 @@ public class UserResponse {
     private String firstName;
     private String lastName;
     private UserRole role;
-    private UserMembership membership;
+    private UserSubscription subscription;
 
     public UserResponse (User user) {
         this.id = user.getId();
@@ -20,7 +20,7 @@ public class UserResponse {
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.role = user.getRole();
-        this.membership = user.getMembership();
+        this.subscription = user.getSubscription();
     }
 
     public UUID getId() {
@@ -62,11 +62,11 @@ public class UserResponse {
         this.role = role; 
     }
     
-    public UserMembership getMembership() { 
-        return membership; 
+    public UserSubscription getSubscription() { 
+        return subscription; 
     }
     
-    public void setMembership(UserMembership membership) { 
-        this.membership = membership; 
+    public void setSubscription(UserSubscription subscription) { 
+        this.subscription = subscription; 
     }
 }

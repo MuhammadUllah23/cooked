@@ -49,8 +49,8 @@ public class User {
     private UserRole role; 
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "membership", nullable = false)
-    private UserMembership membership; 
+    @Column(name = "subscription", nullable = false)
+    private UserSubscription subscription; 
 
     // no-args constructor
     public User() {
@@ -62,7 +62,7 @@ public class User {
         this.email = userRequest.getEmail();
         this.password = BCryptHashing.hashPassword(userRequest.getPassword());
         this.role = UserRole.USER;
-        this.membership = UserMembership.FREE;
+        this.subscription = UserSubscription.FREE;
     }
 
     public UUID getId() { 
@@ -129,11 +129,11 @@ public class User {
         this.role = role; 
     }
 	
-    public UserMembership getMembership() { 
-        return membership; 
+    public UserSubscription getSubscription() { 
+        return subscription; 
     }
     
-    public void setMembership(UserMembership membership) { 
-        this.membership = membership; 
+    public void setSubscription(UserSubscription subscription) { 
+        this.subscription = subscription; 
     }
 }
