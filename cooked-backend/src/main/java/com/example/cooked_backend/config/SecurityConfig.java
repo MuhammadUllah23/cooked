@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.example.cooked_backend.Security.JwtAuthFilter;
+import com.example.cooked_backend.Security.JwtAuthenticationEntryPoint;
 import com.example.cooked_backend.service.CustomUserDetailsService;
 import com.example.cooked_backend.util.SecurityUtils;
 
@@ -24,10 +25,12 @@ public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
     private final CustomUserDetailsService customUserDetailsService;
+    private final JwtAuthenticationEntryPoint authEntryPoint;
 
-	public SecurityConfig(JwtAuthFilter jwtAuthFilter, CustomUserDetailsService customUserDetailsService) {
+	public SecurityConfig(JwtAuthFilter jwtAuthFilter, CustomUserDetailsService customUserDetailsService, JwtAuthenticationEntryPoint authEntryPoint) {
         this.jwtAuthFilter = jwtAuthFilter;
         this.customUserDetailsService = customUserDetailsService;
+        this.authEntryPoint = authEntryPoint;
     }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -42,6 +45,10 @@ public class SecurityConfig {
                 .access(SecurityUtils.requireAllAuthorities("ROLE_USER"))
              
             .anyRequest().authenticated())
+
+            .exceptionHandling(ex -> ex
+                .authenticationEntryPoint(authEntryPoint) 
+            )
 
             // Ensure Spring does not use sessions/cookies
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
