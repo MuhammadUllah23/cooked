@@ -38,10 +38,10 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
             .requestMatchers("/auth/**").permitAll()
 
-            .requestMatchers("/user/premium/**")
+            .requestMatchers("/premium/**")
                 .access(SecurityUtils.requireAllAuthorities("ROLE_USER", "SUBSCRIPTION_PREMIUM"))
             
-            .requestMatchers("/user/**")
+            .requestMatchers("/**")
                 .access(SecurityUtils.requireAllAuthorities("ROLE_USER"))
              
             .anyRequest().authenticated())
