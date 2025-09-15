@@ -47,7 +47,6 @@ public class DefaultUserService implements UserService {
         User createdUser = userRepository.save(user);
 
         UserResponse userResponse = new UserResponse(createdUser);
-        System.out.println("after user creation " + userResponse.toString());
 
         return userResponse;
     }

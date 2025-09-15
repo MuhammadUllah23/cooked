@@ -26,13 +26,11 @@ public class DefaultAuthService implements AuthService {
     }
 
     public AuthResponse loginUser(LoginRequest loginRequest) {
-        System.out.println("before authentication");
         // Authenticate the user
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
         );
 
-        System.out.println("during login " + authentication.getPrincipal());
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
         UserResponse userResponse = defaultUserService.getUserByEmail(customUserDetails.getUsername());
