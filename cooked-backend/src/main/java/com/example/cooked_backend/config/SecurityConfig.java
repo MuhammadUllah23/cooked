@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.example.cooked_backend.Security.JwtAuthFilter;
 import com.example.cooked_backend.service.CustomUserDetailsService;
+import com.example.cooked_backend.util.SecurityUtils;
 
 @Configuration
 @EnableWebSecurity
@@ -33,9 +34,15 @@ public class SecurityConfig {
         http.csrf().disable()
             .authorizeHttpRequests(auth -> auth
             .requestMatchers("/auth/**").permitAll()
-            // .requestMatchers("/admin/**").hasRole("ADMIN") 
-            // .requestMatchers("/user/**").hasAnyRole("USER")
+
+            .requestMatchers("/user/premium/**")
+                .access(SecurityUtils.requireAllAuthorities("ROLE_USER", "SUBSCRIPTION_PREMIUM"))
+            
+            .requestMatchers("/user/**")
+                .access(SecurityUtils.requireAllAuthorities("ROLE_USER"))
+             
             .anyRequest().authenticated())
+
             // Ensure Spring does not use sessions/cookies
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             // Tell Spring how to validate credentials when someone logs in
