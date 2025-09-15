@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.example.cooked_backend.service.CustomUserDetailsService;
+import com.example.cooked_backend.Security.util.JwtUtil;
 import com.example.cooked_backend.model.CustomUserDetails;
-import com.example.cooked_backend.util.JwtUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

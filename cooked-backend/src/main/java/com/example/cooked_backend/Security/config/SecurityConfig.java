@@ -1,4 +1,4 @@
-package com.example.cooked_backend.config;
+package com.example.cooked_backend.Security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,8 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.example.cooked_backend.Security.JwtAuthFilter;
 import com.example.cooked_backend.Security.JwtAuthenticationEntryPoint;
+import com.example.cooked_backend.Security.util.SecurityUtils;
 import com.example.cooked_backend.service.CustomUserDetailsService;
-import com.example.cooked_backend.util.SecurityUtils;
 
 @Configuration
 @EnableWebSecurity

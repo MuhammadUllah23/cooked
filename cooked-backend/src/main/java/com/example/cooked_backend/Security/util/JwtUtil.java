@@ -1,4 +1,4 @@
-package com.example.cooked_backend.util;
+package com.example.cooked_backend.Security.util;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;

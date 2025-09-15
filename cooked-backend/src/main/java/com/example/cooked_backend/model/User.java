@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.example.cooked_backend.Security.util.BCryptHashing;
 import com.example.cooked_backend.dto.request.UserRequest;
-import com.example.cooked_backend.util.BCryptHashing;
 
 import java.time.Instant;
 import java.util.UUID;

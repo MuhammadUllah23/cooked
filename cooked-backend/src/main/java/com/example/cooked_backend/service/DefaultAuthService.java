@@ -5,11 +5,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
+import com.example.cooked_backend.Security.util.JwtUtil;
 import com.example.cooked_backend.dto.request.LoginRequest;
 import com.example.cooked_backend.dto.response.AuthResponse;
 import com.example.cooked_backend.dto.response.UserResponse;
 import com.example.cooked_backend.model.CustomUserDetails;
-import com.example.cooked_backend.util.JwtUtil;
 
 @Service
 public class DefaultAuthService implements AuthService {

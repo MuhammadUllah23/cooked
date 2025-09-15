@@ -1,4 +1,4 @@
-package com.example.cooked_backend.util;
+package com.example.cooked_backend.Security.util;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
