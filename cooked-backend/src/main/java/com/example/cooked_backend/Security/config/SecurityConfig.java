@@ -37,15 +37,13 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/auth/**").permitAll()
 
-            .requestMatchers("/premium/**")
-                .access(SecurityUtils.requireAllAuthorities("ROLE_USER", "SUBSCRIPTION_PREMIUM"))
-            
-            .requestMatchers("/**")
-                .access(SecurityUtils.requireAllAuthorities("ROLE_USER"))
-             
-            .anyRequest().authenticated())
+                .requestMatchers("/premium/**")
+                    .access(SecurityUtils.requireAllAuthorities("ROLE_USER", "SUBSCRIPTION_PREMIUM"))
+                
+                .anyRequest().access(SecurityUtils.requireAllAuthorities("ROLE_USER"))
+            )
 
             .exceptionHandling(ex -> ex
                 .authenticationEntryPoint(authEntryPoint) 
