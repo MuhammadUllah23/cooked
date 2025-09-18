@@ -19,28 +19,50 @@ public class JwtUtil {
     @Value("${jwt.secret}")
     private String secretKey;
 
-    @Value("${jwt.expiration}")
-    private long expirationMs;
+    @Value("${accessExpiration}")
+    private long accessTokenExpirationMs;
+
+    @Value("${refreshExpiration}")
+    private long refreshTokenExpirationMs;
 
     private Key getSigningKey() {
         return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
     /**
-     * Generate JWT token for authentication
+     * Generate JWT access token for authentication
      * @param userId
      * @param email
      * 
      * @return 
      */
     @SuppressWarnings("deprecation")
-    public String generateToken(CustomUserDetails userDetails) {
+    public String generateAccessToken(CustomUserDetails userDetails) {
 
         return Jwts.builder()
                 .setSubject(userDetails.getId().toString())
                 .claim("email", userDetails.getUsername())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
+                .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpirationMs))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+        /**
+     * Generate JWT refresh token for authentication
+     * @param userId
+     * @param email
+     * 
+     * @return 
+     */
+    @SuppressWarnings("deprecation")
+    public String generateRefreshToken(CustomUserDetails userDetails) {
+
+        return Jwts.builder()
+                .setSubject(userDetails.getId().toString())
+                .claim("email", userDetails.getUsername())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + refreshTokenExpirationMs))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
