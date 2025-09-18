@@ -7,7 +7,12 @@ import java.time.ZoneOffset;
 import java.util.UUID;
 
 @Entity
-@Table(name = "refresh_tokens")
+@Table(
+    name = "refresh_tokens",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_id", "device_id"})
+    }
+)
 public class RefreshToken {
 
     @Id
@@ -17,6 +22,9 @@ public class RefreshToken {
 
     @Column(name = "user_id", updatable = false, nullable = false)
     private UUID userId;
+
+    @Column(name = "device_id", nullable = false)
+    private UUID deviceId;
 
     @Column(nullable = false, updatable = false, unique = true)
     private String token;
@@ -30,8 +38,9 @@ public class RefreshToken {
     // Constructors
     public RefreshToken() {}
 
-    public RefreshToken(UUID userId, String token, OffsetDateTime expiresAt) {
+    public RefreshToken(UUID userId, UUID deviceId, String token, OffsetDateTime expiresAt) {
         this.userId = userId;
+        this.deviceId = deviceId;
         this.token = token;
         this.expiresAt = expiresAt;
         this.createdAt = OffsetDateTime.now(ZoneOffset.UTC);
@@ -52,6 +61,14 @@ public class RefreshToken {
 
     public void setUserId(UUID userId) { 
         this.userId = userId; 
+    }
+
+    public UUID getDeviceId() { 
+        return deviceId; 
+    }
+
+    public void setDeviceId(UUID deviceId) { 
+        this.deviceId = deviceId; 
     }
 
     public String getToken() { 
