@@ -11,8 +11,10 @@ import com.example.cooked_backend.dto.response.AuthResponse;
 import com.example.cooked_backend.dto.response.UserResponse;
 import com.example.cooked_backend.model.CustomUserDetails;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 @Service
-public class DefaultAuthService implements AuthService {
+public class DefaultAuthService {
 
     private final AuthenticationManager authenticationManager;
     private final DefaultUserService defaultUserService;

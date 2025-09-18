@@ -16,7 +16,7 @@ import com.example.cooked_backend.exception.ServiceException;
 import com.example.cooked_backend.model.User;
 
 @Service
-public class DefaultUserService implements UserService {
+public class DefaultUserService {
     private final UserRepository userRepository;
 
     // Constructor Injection
@@ -24,13 +24,11 @@ public class DefaultUserService implements UserService {
         this.userRepository = userRepository;
     }
 
-    @Override
     public Optional<User> getUserById(UUID id) {
         Optional<User> user = userRepository.findById(id);
         return user;
     }
 
-    @Override
     public UserResponse getUserByEmail(String userEmail) {
         User user = userRepository.findByEmail(userEmail)
             .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + userEmail));
@@ -38,7 +36,6 @@ public class DefaultUserService implements UserService {
         return new UserResponse(user);
     }
 
-    @Override
     @Transactional
     public UserResponse createUser(UserRequest userRequest) {
         checkUserAlreadyExistsByEmail(userRequest.getEmail());
@@ -51,7 +48,6 @@ public class DefaultUserService implements UserService {
         return userResponse;
     }
 
-    @Override
     @Transactional
     public void deleteUserById(UUID id) {
         userRepository.deleteById(id);

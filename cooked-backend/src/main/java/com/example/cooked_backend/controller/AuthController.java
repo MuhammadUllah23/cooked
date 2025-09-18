@@ -2,6 +2,8 @@ package com.example.cooked_backend.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
 import com.example.cooked_backend.service.DefaultAuthService;
@@ -24,21 +26,23 @@ public class AuthController {
 
     // CREATE user
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> registerAndLoginUser(@Valid @RequestBody UserRequest userRequest) {
+    public ResponseEntity<AuthResponse> registerAndLoginUser(@Valid @RequestBody UserRequest userRequest, 
+                                                             HttpServletResponse response) {
 
         defaultUserService.createUser(userRequest);
 
         LoginRequest loginRequest = new LoginRequest(userRequest.getEmail(), userRequest.getPassword());        
 
-        AuthResponse authResponse = defaultAuthService.loginUser(loginRequest);
+        AuthResponse authResponse = defaultAuthService.loginUser(loginRequest, response);
 
         return ResponseEntity.ok(authResponse);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> loginUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<AuthResponse> loginUser(@Valid @RequestBody LoginRequest loginRequest,
+                                                  HttpServletResponse response) {
 
-        AuthResponse authResponse = defaultAuthService.loginUser(loginRequest);
+        AuthResponse authResponse = defaultAuthService.loginUser(loginRequest, response);
 
         return ResponseEntity.ok(authResponse);
     }
