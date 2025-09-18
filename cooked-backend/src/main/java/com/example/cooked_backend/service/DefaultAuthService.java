@@ -58,8 +58,12 @@ public class DefaultAuthService {
         // generate refresh token
         String refreshToken = jwtUtil.generateRefreshToken(customUserDetails);
 
-        RefreshToken tokenEnity = new RefreshToken(customUserDetails.getId(), deviceId, refreshToken, OffsetDateTime.now(ZoneOffset.UTC).plusDays(7));
-        refreshTokenRepository.save(tokenEnity);
+        try {
+            RefreshToken tokenEnity = new RefreshToken(customUserDetails.getId(), deviceId, refreshToken, OffsetDateTime.now(ZoneOffset.UTC).plusDays(7));
+            refreshTokenRepository.save(tokenEnity);
+        } catch(Exception e) {
+            System.out.println("Failed to save refresh token: " + e);
+        }
 
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
                                               .httpOnly(true)
