@@ -1,6 +1,14 @@
 package com.example.cooked_backend.service;
 
 import org.springframework.security.core.Authentication;
+
+import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.UUID;
+
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
@@ -10,6 +18,8 @@ import com.example.cooked_backend.dto.request.LoginRequest;
 import com.example.cooked_backend.dto.response.AuthResponse;
 import com.example.cooked_backend.dto.response.UserResponse;
 import com.example.cooked_backend.model.CustomUserDetails;
+import com.example.cooked_backend.model.RefreshToken;
+import com.example.cooked_backend.repository.RefreshTokenRepository;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -19,15 +29,19 @@ public class DefaultAuthService {
     private final AuthenticationManager authenticationManager;
     private final DefaultUserService defaultUserService;
     private final JwtUtil jwtUtil;
-    
+    private final RefreshTokenRepository refreshTokenRepository;
 
-    public DefaultAuthService(AuthenticationManager authenticationManager, DefaultUserService defaultUserService, JwtUtil jwtUtil) {
+    public DefaultAuthService(AuthenticationManager authenticationManager, 
+                              DefaultUserService defaultUserService, 
+                              JwtUtil jwtUtil,
+                              RefreshTokenRepository refreshTokenRepository) {
         this.authenticationManager = authenticationManager;
         this.defaultUserService = defaultUserService;
         this.jwtUtil = jwtUtil;
+        this.refreshTokenRepository = refreshTokenRepository;
     }
 
-    public AuthResponse loginUser(LoginRequest loginRequest) {
+    public AuthResponse loginUser(LoginRequest loginRequest, UUID deviceId, HttpServletResponse servletResponse) {
         // Authenticate the user
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
@@ -37,10 +51,29 @@ public class DefaultAuthService {
 
         UserResponse userResponse = defaultUserService.getUserByEmail(customUserDetails.getUsername());
 
-        // generate JWT token
-        String jwtToken = jwtUtil.generateToken(customUserDetails);
+        if (deviceId == null) {
+            deviceId = UUID.randomUUID();
+        }
 
-        AuthResponse authResponse = new AuthResponse(jwtToken, userResponse);
+        // generate refresh token
+        String refreshToken = jwtUtil.generateRefreshToken(customUserDetails);
+
+        RefreshToken tokenEnity = new RefreshToken(customUserDetails.getId(), deviceId, refreshToken, OffsetDateTime.now(ZoneOffset.UTC).plusDays(7));
+        refreshTokenRepository.save(tokenEnity);
+
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+                                              .httpOnly(true)
+                                              .secure(true)
+                                              .path("/api/auth/refresh")
+                                              .maxAge(Duration.ofDays(7))
+                                              .sameSite("Strict")
+                                              .build();
+        servletResponse.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+
+        // generate access token
+        String accessToken = jwtUtil.generateAccessToken(customUserDetails);
+
+        AuthResponse authResponse = new AuthResponse(accessToken, userResponse);
 
         return authResponse;
     }
