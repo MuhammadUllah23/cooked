@@ -33,7 +33,7 @@ public class AuthController {
 
         defaultUserService.createUser(userRequest);
 
-        LoginRequest loginRequest = new LoginRequest(userRequest.getEmail(), userRequest.getPassword());        
+        LoginRequest loginRequest = new LoginRequest(userRequest.getEmail(), userRequest.getPassword(), null);        
 
         AuthResponse authResponse = defaultAuthService.loginUser(loginRequest, response);
 

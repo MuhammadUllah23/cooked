@@ -12,6 +12,7 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.cooked_backend.Security.util.JwtUtil;
 import com.example.cooked_backend.dto.request.LoginRequest;
@@ -41,7 +42,8 @@ public class DefaultAuthService {
         this.refreshTokenRepository = refreshTokenRepository;
     }
 
-    public AuthResponse loginUser(LoginRequest loginRequest, UUID deviceId, HttpServletResponse servletResponse) {
+    @Transactional
+    public AuthResponse loginUser(LoginRequest loginRequest, HttpServletResponse servletResponse) {
         // Authenticate the user
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
@@ -51,8 +53,12 @@ public class DefaultAuthService {
 
         UserResponse userResponse = defaultUserService.getUserByEmail(customUserDetails.getUsername());
 
+        UUID deviceId = loginRequest.getDeviceId();
+        
         if (deviceId == null) {
             deviceId = UUID.randomUUID();
+        } else {
+            refreshTokenRepository.deleteByUserIdAndDeviceId(customUserDetails.getId(), deviceId);
         }
 
         // generate refresh token
