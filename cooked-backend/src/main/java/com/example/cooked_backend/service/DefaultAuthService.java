@@ -61,6 +61,19 @@ public class DefaultAuthService {
             refreshTokenRepository.deleteByUserIdAndDeviceId(customUserDetails.getId(), deviceId);
         }
 
+        ResponseCookie cookie = createRefreshTokenCookie(customUserDetails, deviceId);
+        
+        servletResponse.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+
+        // generate access token
+        String accessToken = jwtUtil.generateAccessToken(customUserDetails);
+
+        AuthResponse authResponse = new AuthResponse(accessToken, userResponse);
+
+        return authResponse;
+    }
+
+    private ResponseCookie createRefreshTokenCookie (CustomUserDetails customUserDetails, UUID deviceId) {
         // generate refresh token
         String refreshToken = jwtUtil.generateRefreshToken(customUserDetails);
 
@@ -71,21 +84,14 @@ public class DefaultAuthService {
             System.out.println("Failed to save refresh token: " + e);
         }
 
-        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+        return ResponseCookie.from("refreshToken", refreshToken)
                                               .httpOnly(true)
                                               .secure(true)
                                               .path("/api/auth/refresh")
                                               .maxAge(Duration.ofDays(7))
                                               .sameSite("Strict")
                                               .build();
-        servletResponse.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
-        // generate access token
-        String accessToken = jwtUtil.generateAccessToken(customUserDetails);
-
-        AuthResponse authResponse = new AuthResponse(accessToken, userResponse);
-
-        return authResponse;
     }
     
 }
