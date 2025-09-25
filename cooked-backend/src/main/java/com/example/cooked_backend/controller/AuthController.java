@@ -29,24 +29,22 @@ public class AuthController {
     // CREATE user
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> registerAndLoginUser(@Valid @RequestBody UserRequest userRequest,
-                                                             @RequestParam(required = false) UUID deviceId, 
                                                              HttpServletResponse response) {
 
         defaultUserService.createUser(userRequest);
 
         LoginRequest loginRequest = new LoginRequest(userRequest.getEmail(), userRequest.getPassword());        
 
-        AuthResponse authResponse = defaultAuthService.loginUser(loginRequest, deviceId, response);
+        AuthResponse authResponse = defaultAuthService.loginUser(loginRequest, response);
 
         return ResponseEntity.ok(authResponse);
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> loginUser(@Valid @RequestBody LoginRequest loginRequest,
-                                                  @RequestParam(required = false) UUID deviceId,
                                                   HttpServletResponse response) {
 
-        AuthResponse authResponse = defaultAuthService.loginUser(loginRequest, deviceId, response);
+        AuthResponse authResponse = defaultAuthService.loginUser(loginRequest, response);
 
         return ResponseEntity.ok(authResponse);
     }
