@@ -62,13 +62,13 @@ public class DefaultAuthService {
         }
 
         ResponseCookie cookie = createRefreshTokenCookie(customUserDetails, deviceId);
-        
+
         servletResponse.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
         // generate access token
         String accessToken = jwtUtil.generateAccessToken(customUserDetails);
 
-        AuthResponse authResponse = new AuthResponse(accessToken, userResponse);
+        AuthResponse authResponse = new AuthResponse(accessToken, userResponse, deviceId);
 
         return authResponse;
     }
