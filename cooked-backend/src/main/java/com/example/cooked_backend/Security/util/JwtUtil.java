@@ -36,15 +36,14 @@ public class JwtUtil {
      * 
      * @return 
      */
-    @SuppressWarnings("deprecation")
     public String generateAccessToken(CustomUserDetails userDetails) {
 
         return Jwts.builder()
-                .setSubject(userDetails.getId().toString())
+                .subject(userDetails.getId().toString())
                 .claim("email", userDetails.getUsername())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpirationMs))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + accessTokenExpirationMs))
+                .signWith(getSigningKey())
                 .compact();
     }
 
@@ -55,15 +54,14 @@ public class JwtUtil {
      * 
      * @return 
      */
-    @SuppressWarnings("deprecation")
     public String generateRefreshToken(CustomUserDetails userDetails) {
 
         return Jwts.builder()
-                .setSubject(userDetails.getId().toString())
+                .subject(userDetails.getId().toString())
                 .claim("email", userDetails.getUsername())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + refreshTokenExpirationMs))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + refreshTokenExpirationMs))
+                .signWith(getSigningKey())
                 .compact();
     }
 
