@@ -44,7 +44,6 @@ public class DefaultAuthService {
 
     @Transactional
     public AuthResponse loginUser(LoginRequest loginRequest, HttpServletResponse servletResponse) {
-        // Authenticate the user
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
         );
@@ -53,16 +52,9 @@ public class DefaultAuthService {
 
         UserResponse userResponse = defaultUserService.getUserByEmail(customUserDetails.getUsername());
 
-        UUID deviceId = loginRequest.getDeviceId();
-        
-        if (deviceId == null) {
-            deviceId = UUID.randomUUID();
-        } else {
-            refreshTokenRepository.deleteByUserIdAndDeviceId(customUserDetails.getId(), deviceId);
-        }
+        UUID deviceId = loginRequest.getDeviceId() != null ? loginRequest.getDeviceId() : UUID.randomUUID();
 
         ResponseCookie cookie = createRefreshTokenCookie(customUserDetails, deviceId);
-
         servletResponse.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
         // generate access token
@@ -77,12 +69,8 @@ public class DefaultAuthService {
         // generate refresh token
         String refreshToken = jwtUtil.generateRefreshToken(customUserDetails);
 
-        try {
-            RefreshToken tokenEnity = new RefreshToken(customUserDetails.getId(), deviceId, refreshToken, OffsetDateTime.now(ZoneOffset.UTC).plusDays(7));
-            refreshTokenRepository.save(tokenEnity);
-        } catch(Exception e) {
-            System.out.println("Failed to save refresh token: " + e);
-        }
+        RefreshToken tokenEnity = new RefreshToken(customUserDetails.getId(), deviceId, refreshToken, OffsetDateTime.now(ZoneOffset.UTC).plusDays(7));
+        refreshTokenRepository.upsert(tokenEnity);
 
         return ResponseCookie.from("refreshToken", refreshToken)
                                               .httpOnly(true)
