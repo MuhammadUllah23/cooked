@@ -34,6 +34,3 @@ build/
 
 ### Environment Variables ###
 .env
-
-### Property Files ###
-application.properties
