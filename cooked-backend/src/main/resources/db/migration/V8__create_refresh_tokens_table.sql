@@ -4,8 +4,7 @@ CREATE TABLE refresh_tokens (
     device_id UUID NOT NULL DEFAULT gen_random_uuid(),
     token TEXT NOT NULL,
     expires_at TIMESTAMP NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    ip_address VARCHAR(45) NULL
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Unique index for quick lookup by token
