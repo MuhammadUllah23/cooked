@@ -65,6 +65,14 @@ public class DefaultAuthService {
         return authResponse;
     }
 
+    public void logout(UUID userId, UUID deviceId, boolean global) {
+        if(global) {
+            refreshTokenRepository.deleteAllByUserId(userId);
+        } else {
+            refreshTokenRepository.deleteByUserIdAndDeviceId(userId, deviceId);
+        }
+    }
+
     private ResponseCookie createRefreshTokenCookie (CustomUserDetails customUserDetails, UUID deviceId) {
         // generate refresh token
         String refreshToken = jwtUtil.generateRefreshToken(customUserDetails);
