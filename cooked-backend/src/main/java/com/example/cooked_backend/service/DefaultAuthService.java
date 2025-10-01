@@ -83,10 +83,13 @@ public class DefaultAuthService {
     }
 
     public RefreshResponse refresh(String refreshToken, UUID deviceId) {
+        if (refreshToken == null || refreshToken.isBlank()) {
+            throw ServiceException.of(ErrorCode.MISSING_REFRESH_TOKEN);
+        }
+
         RefreshToken refreshTokenEntity = refreshTokenRepository.findByTokenAndDeviceId(refreshToken, deviceId)
                                         .orElseThrow(() -> ServiceException.of(ErrorCode.INVALID_REFRESH_TOKEN)
                                                                 .addDetail("refresh token", refreshToken));
-        
 
         if(refreshTokenEntity.getExpiresAt().isBefore(OffsetDateTime.now(ZoneOffset.UTC))) {
             throw ServiceException.of(ErrorCode.EXPIRED_REFRESH_TOKEN).addDetail("refresh token", refreshToken);
