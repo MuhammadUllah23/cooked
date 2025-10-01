@@ -8,8 +8,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
-import java.util.UUID;
-
 import com.example.cooked_backend.service.DefaultAuthService;
 import com.example.cooked_backend.service.DefaultUserService;
 import com.example.cooked_backend.dto.request.LoginRequest;
@@ -21,7 +19,7 @@ import com.example.cooked_backend.dto.response.RefreshResponse;
 import com.example.cooked_backend.model.CustomUserDetails;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("api/auth")
 public class AuthController {
 	
     private final DefaultUserService defaultUserService;

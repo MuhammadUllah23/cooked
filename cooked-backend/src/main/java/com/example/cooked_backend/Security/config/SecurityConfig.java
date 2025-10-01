@@ -40,9 +40,9 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(SecurityConstants.PUBLIC_ENDPOINTS).permitAll()
 
-                .requestMatchers("/auth/logout").authenticated()
+                .requestMatchers("api/auth/logout").authenticated()
 
-                .requestMatchers("/premium/**")
+                .requestMatchers("api/premium/**")
                     .access(SecurityUtils.requireAllAuthorities("ROLE_USER", "SUBSCRIPTION_PREMIUM"))
                 
                 .anyRequest().access(SecurityUtils.requireAllAuthorities("ROLE_USER"))
