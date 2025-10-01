@@ -17,10 +17,15 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.cooked_backend.Security.util.JwtUtil;
 import com.example.cooked_backend.dto.request.LoginRequest;
 import com.example.cooked_backend.dto.response.AuthResponse;
+import com.example.cooked_backend.dto.response.RefreshResponse;
 import com.example.cooked_backend.dto.response.UserResponse;
+import com.example.cooked_backend.exception.ErrorCode;
+import com.example.cooked_backend.exception.ServiceException;
 import com.example.cooked_backend.model.CustomUserDetails;
 import com.example.cooked_backend.model.RefreshToken;
+import com.example.cooked_backend.model.User;
 import com.example.cooked_backend.repository.RefreshTokenRepository;
+import com.example.cooked_backend.repository.UserRepository;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -31,15 +36,18 @@ public class DefaultAuthService {
     private final DefaultUserService defaultUserService;
     private final JwtUtil jwtUtil;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final UserRepository userRepository;
 
     public DefaultAuthService(AuthenticationManager authenticationManager, 
                               DefaultUserService defaultUserService, 
                               JwtUtil jwtUtil,
-                              RefreshTokenRepository refreshTokenRepository) {
+                              RefreshTokenRepository refreshTokenRepository,
+                              UserRepository userRepository) {
         this.authenticationManager = authenticationManager;
         this.defaultUserService = defaultUserService;
         this.jwtUtil = jwtUtil;
         this.refreshTokenRepository = refreshTokenRepository;
+        this.userRepository = userRepository;
     }
 
     @Transactional
@@ -71,6 +79,27 @@ public class DefaultAuthService {
         } else {
             refreshTokenRepository.deleteByUserIdAndDeviceId(userId, deviceId);
         }
+    }
+
+    public RefreshResponse refresh(String refreshToken, UUID deviceId) {
+        RefreshToken refreshTokenEntity = refreshTokenRepository.findByTokenAndDeviceId(refreshToken, deviceId)
+                                        .orElseThrow(() -> ServiceException.of(ErrorCode.INVALID_REFRESH_TOKEN)
+                                                                .addDetail("refresh token", refreshToken));
+        
+
+        if(refreshTokenEntity.getExpiresAt().isBefore(OffsetDateTime.now(ZoneOffset.UTC))) {
+            throw ServiceException.of(ErrorCode.EXPIRED_REFRESH_TOKEN).addDetail("refresh token", refreshToken);
+        }
+
+        User user = userRepository.findById(refreshTokenEntity.getUserId())
+                                    .orElseThrow(() -> ServiceException.of(ErrorCode.USER_NOT_FOUND)
+                                    .addDetail("refresh token", refreshToken));
+
+        CustomUserDetails customUserDetails = new CustomUserDetails(user);
+
+        String accessToken = jwtUtil.generateAccessToken(customUserDetails);
+
+        return new RefreshResponse(accessToken);
     }
 
     private ResponseCookie createRefreshTokenCookie (CustomUserDetails customUserDetails, UUID deviceId) {
