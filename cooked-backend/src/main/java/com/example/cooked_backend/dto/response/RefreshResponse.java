@@ -4,7 +4,7 @@ package com.example.cooked_backend.dto.response;
 public class RefreshResponse {
     private String accessToken;
     
-    public RefreshResponse(String accessToken, String refreshToken) {
+    public RefreshResponse(String accessToken) {
         this.accessToken = accessToken;
     }
 
