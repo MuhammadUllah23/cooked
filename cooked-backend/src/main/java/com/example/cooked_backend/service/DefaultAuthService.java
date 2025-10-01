@@ -83,17 +83,9 @@ public class DefaultAuthService {
     }
 
     public RefreshResponse refresh(String refreshToken, UUID deviceId) {
-        if (refreshToken == null || refreshToken.isBlank()) {
-            throw ServiceException.of(ErrorCode.MISSING_REFRESH_TOKEN);
-        }
+        validateRefreshToken(refreshToken);
 
-        RefreshToken refreshTokenEntity = refreshTokenRepository.findByTokenAndDeviceId(refreshToken, deviceId)
-                                        .orElseThrow(() -> ServiceException.of(ErrorCode.INVALID_REFRESH_TOKEN)
-                                                                .addDetail("refresh token", refreshToken));
-
-        if(refreshTokenEntity.getExpiresAt().isBefore(OffsetDateTime.now(ZoneOffset.UTC))) {
-            throw ServiceException.of(ErrorCode.EXPIRED_REFRESH_TOKEN).addDetail("refresh token", refreshToken);
-        }
+        RefreshToken refreshTokenEntity = retrieveRefreshTokenEntity(refreshToken, deviceId);
 
         User user = userRepository.findById(refreshTokenEntity.getUserId())
                                     .orElseThrow(() -> ServiceException.of(ErrorCode.USER_NOT_FOUND)
@@ -104,6 +96,24 @@ public class DefaultAuthService {
         String accessToken = jwtUtil.generateAccessToken(customUserDetails);
 
         return new RefreshResponse(accessToken);
+    }
+
+    private void validateRefreshToken(String refreshToken) {
+        if (refreshToken == null || refreshToken.isBlank()) {
+            throw ServiceException.of(ErrorCode.MISSING_REFRESH_TOKEN);
+        }
+    }
+
+    private RefreshToken retrieveRefreshTokenEntity(String refreshToken, UUID deviceId){
+        RefreshToken refreshTokenEntity = refreshTokenRepository.findByTokenAndDeviceId(refreshToken, deviceId)
+                                        .orElseThrow(() -> ServiceException.of(ErrorCode.INVALID_REFRESH_TOKEN)
+                                                                .addDetail("refresh token", refreshToken));
+
+        if(refreshTokenEntity.getExpiresAt().isBefore(OffsetDateTime.now(ZoneOffset.UTC))) {
+            throw ServiceException.of(ErrorCode.EXPIRED_REFRESH_TOKEN).addDetail("refresh token", refreshToken);
+        }
+
+        return refreshTokenEntity;
     }
 
     private ResponseCookie createRefreshTokenCookie (CustomUserDetails customUserDetails, UUID deviceId) {
