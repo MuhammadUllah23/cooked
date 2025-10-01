@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.example.cooked_backend.Security.JwtAuthFilter;
 import com.example.cooked_backend.Security.JwtAuthenticationEntryPoint;
+import com.example.cooked_backend.Security.SecurityConstants;
 import com.example.cooked_backend.Security.util.SecurityUtils;
 import com.example.cooked_backend.service.CustomUserDetailsService;
 
@@ -37,7 +38,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**").permitAll()
+                .requestMatchers(SecurityConstants.PUBLIC_ENDPOINTS).permitAll()
+
+                .requestMatchers("/auth/logout").authenticated()
 
                 .requestMatchers("/premium/**")
                     .access(SecurityUtils.requireAllAuthorities("ROLE_USER", "SUBSCRIPTION_PREMIUM"))
