@@ -3,6 +3,8 @@ package com.example.cooked_backend.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
@@ -11,10 +13,12 @@ import java.util.UUID;
 import com.example.cooked_backend.service.DefaultAuthService;
 import com.example.cooked_backend.service.DefaultUserService;
 import com.example.cooked_backend.dto.request.LoginRequest;
+import com.example.cooked_backend.dto.request.LogoutRequest;
 import com.example.cooked_backend.dto.request.RefreshRequest;
 import com.example.cooked_backend.dto.request.UserRequest;
 import com.example.cooked_backend.dto.response.AuthResponse;
 import com.example.cooked_backend.dto.response.RefreshResponse;
+import com.example.cooked_backend.model.CustomUserDetails;
 
 @RestController
 @RequestMapping("/auth")
@@ -51,12 +55,23 @@ public class AuthController {
         return ResponseEntity.ok(authResponse);
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @RequestBody @Valid LogoutRequest logoutRequest
+    ) {
+
+        defaultAuthService.logout(customUserDetails.getId(), logoutRequest.getDeviceId(), logoutRequest.getGlobal());
+
+        return ResponseEntity.noContent().build(); 
+    }
+
 
     @PostMapping("/refresh")
     public ResponseEntity<RefreshResponse> refresh(@CookieValue(name = "refreshToken", required = false) String refreshToken,
                                                     @RequestBody @Valid RefreshRequest refreshRequest) {
         RefreshResponse refreshResponse = defaultAuthService.refresh(refreshToken, refreshRequest.deviceId());
-        
+
         return ResponseEntity.ok(refreshResponse);
     }
     
