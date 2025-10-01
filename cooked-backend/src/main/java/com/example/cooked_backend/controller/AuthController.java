@@ -11,8 +11,10 @@ import java.util.UUID;
 import com.example.cooked_backend.service.DefaultAuthService;
 import com.example.cooked_backend.service.DefaultUserService;
 import com.example.cooked_backend.dto.request.LoginRequest;
+import com.example.cooked_backend.dto.request.RefreshRequest;
 import com.example.cooked_backend.dto.request.UserRequest;
 import com.example.cooked_backend.dto.response.AuthResponse;
+import com.example.cooked_backend.dto.response.RefreshResponse;
 
 @RestController
 @RequestMapping("/auth")
@@ -47,6 +49,15 @@ public class AuthController {
         AuthResponse authResponse = defaultAuthService.loginUser(loginRequest, response);
 
         return ResponseEntity.ok(authResponse);
+    }
+
+
+    @PostMapping("/refresh")
+    public ResponseEntity<RefreshResponse> refresh(@CookieValue(name = "refreshToken", required = false) String refreshToken,
+                                                    @RequestBody @Valid RefreshRequest refreshRequest) {
+        RefreshResponse refreshResponse = defaultAuthService.refresh(refreshToken, refreshRequest.deviceId());
+        
+        return ResponseEntity.ok(refreshResponse);
     }
     
 }
