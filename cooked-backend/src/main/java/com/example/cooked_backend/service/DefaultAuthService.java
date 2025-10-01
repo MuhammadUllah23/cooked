@@ -73,6 +73,7 @@ public class DefaultAuthService {
         return authResponse;
     }
 
+    @Transactional
     public void logout(UUID userId, UUID deviceId, boolean global) {
         if(global) {
             refreshTokenRepository.deleteAllByUserId(userId);

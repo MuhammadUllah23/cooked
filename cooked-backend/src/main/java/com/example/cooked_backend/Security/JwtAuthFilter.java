@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.UUID;
 
 @Component
@@ -34,8 +35,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         String path = request.getRequestURI();
 
+        boolean isPublic = Arrays.asList(SecurityConstants.PUBLIC_ENDPOINTS).contains(path);
+
         // Skip JWT check for public endpoints
-        if (path.startsWith("/auth/")) {
+        if (isPublic) {
             filterChain.doFilter(request, response);
             return;
         }
