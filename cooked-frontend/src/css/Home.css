@@ -1,5 +1,5 @@
 .home {
-  background-color: #2a3f57;
+  background-color: var(--color-background);
   color: white;
   min-height: 100vh;
   font-family: "Segoe UI", sans-serif;

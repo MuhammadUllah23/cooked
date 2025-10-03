@@ -10,6 +10,7 @@
 .logo {
   font-size: 1.5rem;
   font-weight: bold;
+  color: #ffffff;
 }
 
 .nav-links a {
@@ -21,4 +22,5 @@
 
 .nav-links a:hover {
   text-decoration: underline;
+  color: #ffffff;
 }
