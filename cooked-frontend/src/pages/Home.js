@@ -1,7 +1,7 @@
 import React from "react";
 import '../css/Home.css';
 
-import HomeNavBar from "./HomeNavBar";
+import HomeNavBar from "../components/HomeNavBar";
 
 function Home() {
     return (
