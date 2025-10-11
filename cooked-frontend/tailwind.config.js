@@ -5,7 +5,16 @@ module.exports = {
     "./public/index.html"
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        background: "#2a3f57",        // --color-background
+        navbar: "#1e2e42",            // --color-navbar
+        primary: "#4da6ff",           // --color-primary
+        "primary-hover": "#3399ff",   // --color-primary-hover
+        text: "#ffffff",              // --color-text
+        "text-muted": "#d3d3d3",     // --color-text-muted
+      }
+    },
   },
   plugins: [],
 }
