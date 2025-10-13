@@ -1,16 +1,28 @@
 import React from "react";
-import '../css/HomeNavBar.css';
 
 function HomeNavBar() {
-    return (
-        <nav className="navbar">
-            <div className="logo">Cooked</div>
-            <div className="nav-links">
-                <a href="/login">Login</a>
-                <a href="/register">Register</a>
-            </div>
-        </nav>
-    )
+  return (
+    <nav className="flex justify-between items-center bg-navbar text-white py-4 px-8 shadow-md">
+      <div className="text-2xl font-bold tracking-tight">
+        Cooked
+      </div>
+
+      <div className="flex space-x-6">
+        <a
+          href="/login"
+          className="text-blue-400 font-medium hover:text-white hover:underline transition-colors"
+        >
+          Login
+        </a>
+        <a
+          href="/register"
+          className="text-blue-400 font-medium hover:text-white hover:underline transition-colors"
+        >
+          Register
+        </a>
+      </div>
+    </nav>
+  );
 }
 
 export default HomeNavBar;
