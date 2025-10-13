@@ -9,13 +9,13 @@ function HomeNavBar() {
 
       <div className="flex space-x-6">
         <a
-          href="/login"
+          href="/auth?mode=login"
           className="text-blue-400 font-medium hover:text-white hover:underline transition-colors"
         >
           Login
         </a>
         <a
-          href="/register"
+          href="/auth?mode=register"
           className="text-blue-400 font-medium hover:text-white hover:underline transition-colors"
         >
           Register
