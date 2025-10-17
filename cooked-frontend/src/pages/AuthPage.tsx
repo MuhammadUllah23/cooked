@@ -1,7 +1,7 @@
 import React from "react";
 import { useSearchParams } from "react-router-dom";
-// import LoginForm from "../components/LoginForm";
-// import RegisterForm from "../components/RegisterForm";
+import LoginForm from "../components/LoginForm.tsx";
+import RegisterForm from "../components/RegisterForm.tsx";
 
 const AuthPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -18,7 +18,7 @@ const AuthPage: React.FC = () => {
           {mode === "login" ? "Welcome Back" : "Create Account"}
         </h1>
 
-        {mode === "login" ? "<LoginForm />" : "<RegisterForm />"}
+        {mode === "login" ? <LoginForm /> : <RegisterForm />}
 
         <button
           onClick={toggleMode}
