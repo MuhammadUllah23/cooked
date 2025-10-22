@@ -1,56 +1,98 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
 
-let accessToken: string | null = null; 
-
+let accessToken: string | null = null;
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 
-
 const api: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
-  withCredentials: true, 
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
+// Type for Axios config with optional _retry
+interface AxiosRequestConfigWithRetry extends AxiosRequestConfig {
+  _retry?: boolean;
+}
+
 // Request interceptor → attach access token if available
 api.interceptors.request.use((config) => {
   if (accessToken) {
-    config.headers.Authorization = `Bearer ${accessToken}`;
+    config.headers = config.headers ?? {}; // ensure headers exist
+
+    // If AxiosHeaders object, use set()
+    if ('set' in config.headers && typeof config.headers.set === 'function') {
+      config.headers.set('Authorization', `Bearer ${accessToken}`);
+    } else {
+      // fallback for plain object
+      (config.headers as any).Authorization = `Bearer ${accessToken}`;
+    }
   }
   return config;
 });
 
-// Response interceptor handle 401 refresh logic
-api.interceptors.response.use(
-  (response) => response, 
-  async (error: AxiosError) => {
-    const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
+// Response interceptor → handle 401 refresh logic
+let isRefreshing = false;
+let failedQueue: Array<(token: string | null) => void> = [];
 
-    // If request failed with 401 and it hasn’t been retried yet → try refresh
+api.interceptors.response.use(
+  (response) => response,
+  async (error: AxiosError) => {
+    const originalRequest = error.config as AxiosRequestConfigWithRetry;
+
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-      try {
-        const refreshResponse = await axios.post(
-          `${API_BASE_URL}/auth/refresh`,
-          {},
-          { withCredentials: true }
-        );
 
+      if (isRefreshing) {
+        // Queue failed requests until refresh completes
+        return new Promise((resolve) => {
+          failedQueue.push((token) => {
+            if (token) {
+              originalRequest.headers = {
+                ...originalRequest.headers,
+                Authorization: `Bearer ${token}`,
+              };
+            }
+            resolve(api(originalRequest));
+          });
+        });
+      }
+
+      isRefreshing = true;
+
+      try {
+        // Call refresh endpoint
+        const refreshResponse = await api.post("/v1/auth/refresh", {});
         const newAccessToken = (refreshResponse.data as { accessToken: string }).accessToken;
-        accessToken = newAccessToken; 
+
+        // Update in-memory token
+        setAccessToken(newAccessToken);
+
+        // Retry all queued requests
+        failedQueue.forEach((cb) => cb(newAccessToken));
+        failedQueue = [];
 
         // Retry original request with new token
-        if (originalRequest.headers) {
-          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-        }
-
-        // retry the request
-        return api(originalRequest); 
+        originalRequest.headers = {
+          ...originalRequest.headers,
+          Authorization: `Bearer ${newAccessToken}`,
+        };
+        return api(originalRequest);
       } catch (refreshError) {
-        console.error("Token refresh failed:", refreshError);
+        // Refresh failed → logout
+        failedQueue.forEach((cb) => cb(null));
+        failedQueue = [];
+        setAccessToken(null);
+
+        window.localStorage.removeItem("user");
+        window.localStorage.removeItem("deviceId");
         window.location.href = "/login";
+
+        return Promise.reject(refreshError);
+      } finally {
+        isRefreshing = false;
       }
     }
 
@@ -58,7 +100,8 @@ api.interceptors.response.use(
   }
 );
 
-export const setAccessToken = (token: string) => {
+// Export helper functions to manage token
+export const setAccessToken = (token: string | null) => {
   accessToken = token;
 };
 
