@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosHeaders } from "axios";
 import { callLogout } from "../context/AuthContext";
 
 let accessToken: string | null = null;
@@ -16,28 +16,43 @@ const api: AxiosInstance = axios.create({
 // Type for Axios config with optional _retry
 interface AxiosRequestConfigWithRetry extends AxiosRequestConfig {
   _retry?: boolean;
+  headers: AxiosHeaders;
 }
 
-// Request interceptor → attach access token if available
-api.interceptors.request.use((config) => {
-  if (accessToken) {
-    config.headers = config.headers ?? {}; // ensure headers exist
+// ----- Robust queue pattern -----
+interface FailedRequest {
+  resolve: (value: any) => void;
+  reject: (reason?: any) => void;
+  originalRequest: AxiosRequestConfigWithRetry;
+}
 
-    // If AxiosHeaders object, use set()
-    if ('set' in config.headers && typeof config.headers.set === 'function') {
-      config.headers.set('Authorization', `Bearer ${accessToken}`);
+let isRefreshing = false;
+let failedQueue: FailedRequest[] = [];
+
+const processQueue = (error: any, token: string | null = null) => {
+  failedQueue.forEach(({ resolve, reject, originalRequest }) => {
+    if (token) {
+      originalRequest.headers.set("Authorization", `Bearer ${token}`);
+      resolve(api(originalRequest));
     } else {
-      // fallback for plain object
-      (config.headers as any).Authorization = `Bearer ${accessToken}`;
+      reject(error);
     }
+  });
+  failedQueue = [];
+};
+
+// Request interceptor → attach access token
+api.interceptors.request.use((config) => {
+  config.headers = config.headers ?? new AxiosHeaders();
+
+  if (accessToken) {
+    config.headers.set("Authorization", `Bearer ${accessToken}`);
   }
+
   return config;
 });
 
 // Response interceptor → handle 401 refresh logic
-let isRefreshing = false;
-let failedQueue: Array<(token: string | null) => void> = [];
-
 api.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
@@ -47,47 +62,35 @@ api.interceptors.response.use(
       originalRequest._retry = true;
 
       if (isRefreshing) {
-        // Queue failed requests until refresh completes
-        return new Promise((resolve) => {
-          failedQueue.push((token) => {
-            if (token) {
-              originalRequest.headers = {
-                ...originalRequest.headers,
-                Authorization: `Bearer ${token}`,
-              };
-            }
-            resolve(api(originalRequest));
-          });
+        // Queue this request until refresh completes
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject, originalRequest });
         });
       }
 
       isRefreshing = true;
 
       try {
-        // Call refresh endpoint
         const deviceId = localStorage.getItem("deviceId") || "";
-        const refreshResponse = await api.post("/auth/refresh", { deviceId }, { withCredentials: true });
+        const refreshResponse = await api.post(
+          "/auth/refresh",
+          { deviceId },
+          { withCredentials: true }
+        );
 
         const newAccessToken = (refreshResponse.data as { accessToken: string }).accessToken;
 
-        // Update in-memory token
         setAccessToken(newAccessToken);
 
         // Retry all queued requests
-        failedQueue.forEach((cb) => cb(newAccessToken));
-        failedQueue = [];
+        processQueue(null, newAccessToken);
 
-        // Retry original request with new token
-        originalRequest.headers = {
-          ...originalRequest.headers,
-          Authorization: `Bearer ${newAccessToken}`,
-        };
+        // Retry original request
+        originalRequest.headers.set("Authorization", `Bearer ${newAccessToken}`);
         return api(originalRequest);
       } catch (refreshError) {
-        // Refresh failed → logout
-        failedQueue.forEach((cb) => cb(null));
-        failedQueue = [];
-        
+        // Refresh failed reject queued requests and logout
+        processQueue(refreshError, null);
         callLogout();
         return Promise.reject(refreshError);
       } finally {
