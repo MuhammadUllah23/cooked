@@ -45,6 +45,11 @@ export interface RefreshResponse {
   accessToken: string;
 }
 
+export interface LogoutRequest {
+  deviceId: string;
+  global: boolean;
+}
+
 export async function registerUser(data: RegisterRequest): Promise<AuthResponse> {
 
 }
@@ -53,9 +58,9 @@ export async function loginUser(data: LoginRequest): Promise<AuthResponse> {
 
 }
 
-// export async function logoutUser(data: RegisterRequest): Promise<AuthResponse> {
+export async function logoutUser(data: LogoutRequest): Promise<> {
 
-// }
+}
 
 export async function refresh(data: RefreshRequest): Promise<RefreshResponse> {
 
