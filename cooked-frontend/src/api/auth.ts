@@ -53,7 +53,7 @@ export interface LogoutRequest {
 
 export async function registerUser(data: RegisterRequest): Promise<AuthResponse> {
   try {
-    const response = await api.post<AuthResponse>("/register", data, {
+    const response = await api.post<AuthResponse>("/auth/register", data, {
       withCredentials: true,
     })
     const authData = response.data;
@@ -67,7 +67,7 @@ export async function registerUser(data: RegisterRequest): Promise<AuthResponse>
 
 export async function loginUser(data: LoginRequest): Promise<AuthResponse> {
   try {
-    const response = await api.post<AuthResponse>("/login", data, {
+    const response = await api.post<AuthResponse>("/auth/login", data, {
       withCredentials: true,
     })
 
@@ -81,7 +81,7 @@ export async function loginUser(data: LoginRequest): Promise<AuthResponse> {
 
 export async function logoutUser(data: LogoutRequest): Promise<void> {
   try {
-    await api.post("/logout", data, {
+    await api.post("/auth/logout", data, {
       withCredentials: true,
     });
     setAccessToken("");
@@ -93,7 +93,7 @@ export async function logoutUser(data: LogoutRequest): Promise<void> {
 
 export async function refresh(data: RefreshRequest): Promise<RefreshResponse> {
   try {
-    const response = await api.post("/refresh", data, {
+    const response = await api.post("/auth/refresh", data, {
       withCredentials: true,
     });
 
