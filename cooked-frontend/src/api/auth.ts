@@ -1,4 +1,5 @@
 import api, { setAccessToken } from "./api";
+import { handleApiError } from "./errorHandler";
 
 export enum UserSubscription {
   FREE = "FREE",
@@ -51,17 +52,57 @@ export interface LogoutRequest {
 }
 
 export async function registerUser(data: RegisterRequest): Promise<AuthResponse> {
+  try {
+    const response = await api.post<AuthResponse>("/register", data, {
+      withCredentials: true,
+    })
+    const authData = response.data;
+    setAccessToken(authData.token)
+    return authData
+  } catch (error) {
+    handleApiError(error);
+  }
 
 }
 
 export async function loginUser(data: LoginRequest): Promise<AuthResponse> {
+  try {
+    const response = await api.post<AuthResponse>("/login", data, {
+      withCredentials: true,
+    })
 
+    const authData = response.data;
+    setAccessToken(authData.token)
+    return authData
+  } catch (error) {
+    handleApiError(error);
+  }
 }
 
-export async function logoutUser(data: LogoutRequest): Promise<> {
+export async function logoutUser(data: LogoutRequest): Promise<void> {
+  try {
+    await api.post("/logout", data, {
+      withCredentials: true,
+    });
+    setAccessToken("");
+  } catch (error) {
+    handleApiError(error);
+  }
 
 }
 
 export async function refresh(data: RefreshRequest): Promise<RefreshResponse> {
+  try {
+    const response = await api.post("/refresh", data, {
+      withCredentials: true,
+    });
+
+    const newToken = response.data.accessToken
+    setAccessToken(newToken)
+
+    return newToken
+  } catch (error) {
+    handleApiError(error);
+  }
 
 }
