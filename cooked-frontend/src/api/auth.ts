@@ -37,6 +37,10 @@ export interface LoginRequest {
   deviceId: string;
 }
 
+export interface RefreshRequest {
+  deviceId: string;
+}
+
 export interface RefreshResponse {
   accessToken: string;
 }
@@ -45,14 +49,14 @@ export async function registerUser(data: RegisterRequest): Promise<AuthResponse>
 
 }
 
-export async function loginUser(data: RegisterRequest): Promise<AuthResponse> {
+export async function loginUser(data: LoginRequest): Promise<AuthResponse> {
 
 }
 
-export async function logoutUser(data: RegisterRequest): Promise<AuthResponse> {
+// export async function logoutUser(data: RegisterRequest): Promise<AuthResponse> {
 
-}
+// }
 
-export async function refresh(data: RegisterRequest): Promise<AuthResponse> {
+export async function refresh(data: RefreshRequest): Promise<RefreshResponse> {
 
 }
