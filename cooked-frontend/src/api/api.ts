@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
+import { callLogout } from "../context/AuthContext";
 
 let accessToken: string | null = null;
 
@@ -64,7 +65,9 @@ api.interceptors.response.use(
 
       try {
         // Call refresh endpoint
-        const refreshResponse = await api.post("/v1/auth/refresh", {});
+        const deviceId = localStorage.getItem("deviceId") || "";
+        const refreshResponse = await api.post("/auth/refresh", { deviceId }, { withCredentials: true });
+
         const newAccessToken = (refreshResponse.data as { accessToken: string }).accessToken;
 
         // Update in-memory token
@@ -84,12 +87,8 @@ api.interceptors.response.use(
         // Refresh failed → logout
         failedQueue.forEach((cb) => cb(null));
         failedQueue = [];
-        setAccessToken(null);
-
-        window.localStorage.removeItem("user");
-        window.localStorage.removeItem("deviceId");
-        window.location.href = "/login";
-
+        
+        callLogout();
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
