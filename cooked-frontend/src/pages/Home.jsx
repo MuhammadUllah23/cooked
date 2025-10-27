@@ -1,5 +1,5 @@
 import React from "react";
-import HomeNavBar from "../components/HomeNavBar";
+import HomeNavBar from "../components/HomeNavBar.js";
 
 function Home() {
   return (
