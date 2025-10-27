@@ -1,8 +1,9 @@
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from './pages/Home';
-import AuthPage from './pages/AuthPage.tsx';
+import AuthPage from "./pages/AuthPage";
+import Home from "./pages/Home";
 
-function App() {
+const App: React.FC = () => {
   return (
     <Router>
       <Routes>
@@ -12,6 +13,6 @@ function App() {
       </Routes>
     </Router>
   );
-}
+};
 
 export default App;
