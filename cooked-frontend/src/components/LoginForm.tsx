@@ -2,6 +2,8 @@ import React, { FormEvent, useState } from "react";
 import { useLoginHandler } from "../utils/handleLogin";
 import { useNavigate } from "react-router-dom";
 
+import ErrorMessage from "./ErrorMessage";
+
 const LoginForm: React.FC = () => {
 
   const { handleLogin, loading, error } = useLoginHandler();
@@ -28,11 +30,7 @@ const LoginForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-      {error && (
-        <p className="text-red-500 font-medium text-sm">
-          {error}
-        </p>
-      )}
+      {error && <ErrorMessage message={error} />}
       <input
         type="email"
         placeholder="Email"
