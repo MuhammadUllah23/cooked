@@ -8,12 +8,18 @@ export function useLoginHandler() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleLogin = async (data: LoginRequest) => {
+  const handleLogin = async (credentials: Omit<LoginRequest, "deviceId">) => {
     setLoading(true);
     setError(null);
 
     try {
-      const authData = await loginUser(data); 
+      let deviceId = localStorage.getItem("deviceId") || undefined;
+
+      const authData = await loginUser({
+        ...credentials,
+        deviceId, 
+      });
+
       if (authData) {
         login(authData.user, authData.token, authData.deviceId);
       }
