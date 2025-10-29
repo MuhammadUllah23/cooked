@@ -35,7 +35,7 @@ export interface RegisterRequest {
 export interface LoginRequest {
   email: string;
   password: string;
-  deviceId: string;
+  deviceId?: string;
 }
 
 export interface RefreshRequest {
@@ -48,7 +48,7 @@ export interface RefreshResponse {
 
 export interface LogoutRequest {
   deviceId: string;
-  global: boolean;
+  global?: boolean;
 }
 
 export async function registerUser(data: RegisterRequest): Promise<AuthResponse> {
