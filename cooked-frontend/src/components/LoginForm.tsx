@@ -1,10 +1,30 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useState } from "react";
+import { useLoginHandler } from "../utils/handleLogin";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm: React.FC = () => {
-  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
+
+  const { handleLogin, loading, error } = useLoginHandler();
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Login form submitted");
+
+    try {
+      const loginData = { email, password };
+      const authData = await handleLogin(loginData);
+
+      if (authData?.user?.id) {
+        navigate(`${authData.user.id}/business/create/`);
+      }
+    } catch (err) {
+      console.error("Login failed:", err);
+    }
   };
+
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
@@ -24,7 +44,7 @@ const LoginForm: React.FC = () => {
         type="submit"
         className="bg-primary hover:bg-primary-hover text-white font-bold py-2 rounded transition"
       >
-        Login
+        {loading ? "Logging in..." : "Login"}
       </button>
     </form>
   );

@@ -22,6 +22,7 @@ export function useLoginHandler() {
 
       if (authData) {
         login(authData.user, authData.token, authData.deviceId);
+        return authData;
       }
     } catch (err) {
       const message = (err as Error).message || "Login failed. Please try again.";
