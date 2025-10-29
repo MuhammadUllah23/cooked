@@ -14,7 +14,9 @@ module.exports = {
         text: "#ffffff",              // --color-text
         "text-muted": "#d3d3d3",     // --color-text-muted
         error: "#EF4444", // bright red
-        "error-dark": "#B91C1C", // darker variant
+        "error-dark": "#B91C1C", // darker variant,
+        "btn-primary": "#60A5FA",          // blue-400
+        "btn-secondary": "#9CA3AF", // gray-400 equivalent for secondary buttons
       }
     },
   },

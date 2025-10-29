@@ -23,7 +23,7 @@ const AuthPage: React.FC = () => {
 
         <button
           onClick={toggleMode}
-          className="mt-6 w-full text-blue-400 hover:text-blue-200 transition-colors text-sm"
+          className="mt-6 w-full text-btn-primary hover:text-white transition-colors text-sm"
         >
           {mode === "login"
             ? "Don’t have an account? Register"
@@ -33,7 +33,7 @@ const AuthPage: React.FC = () => {
       <div className="mt-4 flex justify-center">
         <button
           onClick={() => navigate("/")}
-          className="text-sm text-btn-secondary hover:text-btn-secondary-hover transition-colors"
+          className="text-sm text-btn-secondary hover:text-white transition-colors"
         >
           ← Back to Home
         </button>
