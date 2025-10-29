@@ -1,9 +1,10 @@
 import React from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
 
 const AuthPage: React.FC = () => {
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const mode = (searchParams.get("mode") || "login") as "login" | "register";
 
@@ -27,6 +28,14 @@ const AuthPage: React.FC = () => {
           {mode === "login"
             ? "Don’t have an account? Register"
             : "Already have an account? Login"}
+        </button>
+      </div>
+      <div className="mt-4 flex justify-center">
+        <button
+          onClick={() => navigate("/")}
+          className="text-sm text-btn-secondary hover:text-btn-secondary-hover transition-colors"
+        >
+          ← Back to Home
         </button>
       </div>
     </div>
