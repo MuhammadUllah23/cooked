@@ -13,6 +13,8 @@ module.exports = {
         "primary-hover": "#3399ff",   // --color-primary-hover
         text: "#ffffff",              // --color-text
         "text-muted": "#d3d3d3",     // --color-text-muted
+        error: "#EF4444", // bright red
+        "error-dark": "#B91C1C", // darker variant
       }
     },
   },

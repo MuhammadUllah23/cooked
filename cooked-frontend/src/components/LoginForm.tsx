@@ -28,6 +28,11 @@ const LoginForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+      {error && (
+        <p className="text-red-500 font-medium text-sm">
+          {error}
+        </p>
+      )}
       <input
         type="email"
         placeholder="Email"
