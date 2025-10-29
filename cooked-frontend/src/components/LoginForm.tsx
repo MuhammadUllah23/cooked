@@ -35,12 +35,16 @@ const LoginForm: React.FC = () => {
         type="email"
         placeholder="Email"
         className="p-3 rounded bg-background border border-blue-400 text-white"
+        value={email}  
+        onChange={(e) => setEmail(e.target.value)}
         required
       />
       <input
         type="password"
         placeholder="Password"
         className="p-3 rounded bg-background border border-blue-400 text-white"
+        value={password}  
+        onChange={(e) => setPassword(e.target.value)}
         required
       />
       <button
