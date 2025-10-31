@@ -1,6 +1,9 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useState } from "react";
+import PasswordInput from "./PasswordInput";
 
 const RegisterForm: React.FC = () => {
+   const [password, setPassword] = useState("");
+  
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     console.log("Register form submitted");
@@ -14,7 +17,7 @@ const RegisterForm: React.FC = () => {
           id="firstName"
           type="text"
           placeholder="Enter your first name"
-          className="p-3 rounded bg-background border border-blue-400 text-white"
+          className="p-3 rounded bg-background border border-btn-primary text-white"
           required
         />
       </div>
@@ -24,7 +27,7 @@ const RegisterForm: React.FC = () => {
           id="lastName"
           type="text"
           placeholder="Enter your last name"
-          className="p-3 rounded bg-background border border-blue-400 text-white"
+          className="p-3 rounded bg-background border border-btn-primary text-white"
           required
         />
       </div>
@@ -35,32 +38,27 @@ const RegisterForm: React.FC = () => {
           id="email"
           type="email"
           placeholder="Enter your email"
-          className="p-3 rounded bg-background border border-blue-400 text-white"
+          className="p-3 rounded bg-background border border-btn-primary text-white"
           required
         />
       </div>
 
-      <div className="flex flex-col">
-        <label htmlFor="password" className="text-white mb-1">Password</label>
-        <input
-          id="password"
-          type="password"
-          placeholder="Enter your password"
-          className="p-3 rounded bg-background border border-blue-400 text-white"
-          required
-        />
-      </div>
-
-      <div className="flex flex-col">
-        <label htmlFor="confirmPassword" className="text-white mb-1">Confirm Password</label>
-        <input
-          id="confirmPassword"
-          type="password"
-          placeholder="Re-enter your password"
-          className="p-3 rounded bg-background border border-blue-400 text-white"
-          required
-        />
-      </div>
+      <PasswordInput
+        id="password"
+        label="Password"
+        placeholder="Enter your password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+      />
+      <PasswordInput
+        id="confirmPassword"
+        label="Confirm Password"
+        placeholder="Re-enter your password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+      />
       <button
         type="submit"
         className="bg-primary hover:bg-primary-hover text-white font-bold py-2 rounded transition"
