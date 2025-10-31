@@ -31,22 +31,32 @@ const LoginForm: React.FC = () => {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
       {error && <ErrorMessage message={error} />}
-      <input
-        type="email"
-        placeholder="Email"
-        className="p-3 rounded bg-background border border-blue-400 text-white"
-        value={email}  
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        className="p-3 rounded bg-background border border-blue-400 text-white"
-        value={password}  
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
+      <div className="flex flex-col">
+        <label htmlFor="email" className="text-white mb-1">Email</label>
+        <input
+          id="email"
+          type="email"
+          placeholder="Enter your email"
+          className="p-3 rounded bg-background border border-blue-400 text-white"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+      </div>
+
+      <div className="flex flex-col">
+        <label htmlFor="password" className="text-white mb-1">Password</label>
+        <input
+          id="password"
+          type="password"
+          placeholder="Enter your password"
+          className="p-3 rounded bg-background border border-blue-400 text-white"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+      </div>
+      
       <button
         type="submit"
         className="bg-primary hover:bg-primary-hover text-white font-bold py-2 rounded transition"

@@ -8,36 +8,59 @@ const RegisterForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-      <input
-        type="text"
-        placeholder="First Name"
-        className="p-3 rounded bg-background border border-blue-400 text-white"
-        required
-      />
-            <input
-        type="text"
-        placeholder="Last Name"
-        className="p-3 rounded bg-background border border-blue-400 text-white"
-        required
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        className="p-3 rounded bg-background border border-blue-400 text-white"
-        required
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        className="p-3 rounded bg-background border border-blue-400 text-white"
-        required
-      />
-      <input
-        type="password"
-        placeholder="Confirm Password"
-        className="p-3 rounded bg-background border border-blue-400 text-white"
-        required
-      />
+      <div className="flex flex-col">
+        <label htmlFor="firstName" className="text-white mb-1">First Name</label>
+        <input
+          id="firstName"
+          type="text"
+          placeholder="Enter your first name"
+          className="p-3 rounded bg-background border border-blue-400 text-white"
+          required
+        />
+      </div>
+      <div className="flex flex-col">
+        <label htmlFor="lastName" className="text-white mb-1">Last Name</label>
+        <input
+          id="lastName"
+          type="text"
+          placeholder="Enter your last name"
+          className="p-3 rounded bg-background border border-blue-400 text-white"
+          required
+        />
+      </div>
+
+      <div className="flex flex-col">
+        <label htmlFor="email" className="text-white mb-1">Email</label>
+        <input
+          id="email"
+          type="email"
+          placeholder="Enter your email"
+          className="p-3 rounded bg-background border border-blue-400 text-white"
+          required
+        />
+      </div>
+
+      <div className="flex flex-col">
+        <label htmlFor="password" className="text-white mb-1">Password</label>
+        <input
+          id="password"
+          type="password"
+          placeholder="Enter your password"
+          className="p-3 rounded bg-background border border-blue-400 text-white"
+          required
+        />
+      </div>
+
+      <div className="flex flex-col">
+        <label htmlFor="confirmPassword" className="text-white mb-1">Confirm Password</label>
+        <input
+          id="confirmPassword"
+          type="password"
+          placeholder="Re-enter your password"
+          className="p-3 rounded bg-background border border-blue-400 text-white"
+          required
+        />
+      </div>
       <button
         type="submit"
         className="bg-primary hover:bg-primary-hover text-white font-bold py-2 rounded transition"
