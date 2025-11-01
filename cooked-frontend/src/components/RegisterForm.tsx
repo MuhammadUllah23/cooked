@@ -3,6 +3,7 @@ import PasswordInput from "./PasswordInput";
 
 const RegisterForm: React.FC = () => {
    const [password, setPassword] = useState("");
+   const [confirmPassword, setConfirmPassword] = useState("");
   
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -55,8 +56,8 @@ const RegisterForm: React.FC = () => {
         id="confirmPassword"
         label="Confirm Password"
         placeholder="Re-enter your password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        value={confirmPassword}
+        onChange={(e) => setConfirmPassword(e.target.value)}
         required
       />
       <button
