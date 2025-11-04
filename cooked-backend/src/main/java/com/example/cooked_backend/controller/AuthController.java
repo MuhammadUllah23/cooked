@@ -19,7 +19,7 @@ import com.example.cooked_backend.dto.response.RefreshResponse;
 import com.example.cooked_backend.model.CustomUserDetails;
 
 @RestController
-@RequestMapping("api/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 	
     private final DefaultUserService defaultUserService;
