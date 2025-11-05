@@ -10,6 +10,7 @@ import java.util.UUID;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,25 +53,29 @@ public class DefaultAuthService {
 
     @Transactional
     public AuthResponse loginUser(LoginRequest loginRequest, HttpServletResponse servletResponse) {
-        Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
-        );
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
+            );
 
-        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
-        UserResponse userResponse = defaultUserService.getUserByEmail(customUserDetails.getUsername());
+            UserResponse userResponse = defaultUserService.getUserByEmail(customUserDetails.getUsername());
 
-        UUID deviceId = loginRequest.getDeviceId() != null ? loginRequest.getDeviceId() : UUID.randomUUID();
+            UUID deviceId = loginRequest.getDeviceId() != null ? loginRequest.getDeviceId() : UUID.randomUUID();
 
-        ResponseCookie cookie = createRefreshTokenCookie(customUserDetails, deviceId);
-        servletResponse.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+            ResponseCookie cookie = createRefreshTokenCookie(customUserDetails, deviceId);
+            servletResponse.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
-        // generate access token
-        String accessToken = jwtUtil.generateAccessToken(customUserDetails);
+            // generate access token
+            String accessToken = jwtUtil.generateAccessToken(customUserDetails);
 
-        AuthResponse authResponse = new AuthResponse(accessToken, userResponse, deviceId);
+            AuthResponse authResponse = new AuthResponse(accessToken, userResponse, deviceId);
 
-        return authResponse;
+            return authResponse;
+        } catch (BadCredentialsException ex) {
+            throw ServiceException.of(ErrorCode.INVALID_EMAIL_OR_PASSWORD);
+        }
     }
 
     @Transactional

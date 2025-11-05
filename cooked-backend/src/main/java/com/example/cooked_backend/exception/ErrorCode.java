@@ -7,7 +7,8 @@ public enum ErrorCode {
     USER_NOT_FOUND("User not found", HttpStatus.NOT_FOUND),
     INVALID_REFRESH_TOKEN("Invalid refresh token", HttpStatus.UNAUTHORIZED),
     EXPIRED_REFRESH_TOKEN("Refresh Token is expired", HttpStatus.UNAUTHORIZED),
-    MISSING_REFRESH_TOKEN("Refresh Token is missing", HttpStatus.UNAUTHORIZED)
+    MISSING_REFRESH_TOKEN("Refresh Token is missing", HttpStatus.UNAUTHORIZED),
+    INVALID_EMAIL_OR_PASSWORD("Invalid email or password", HttpStatus.UNAUTHORIZED),
     
     ;
 
