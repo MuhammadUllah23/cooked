@@ -8,11 +8,11 @@ public class RefreshResponse {
         this.accessToken = accessToken;
     }
 
-    public String getAcessToken() {
+    public String getAccessToken() {
         return accessToken;
     }
 
-    public void setAccesToken(String accessToken) {
+    public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
     }    
     
