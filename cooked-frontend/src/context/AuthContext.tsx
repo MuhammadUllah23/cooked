@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { UserResponse } from "../api/auth";
-import { setAccessToken } from "../api/api";
+import { clearAccessToken, setAccessToken } from "../api/api";
 import { refresh, logoutUser } from "../api/auth";
 import { useNavigate } from "react-router-dom";
 
@@ -56,7 +56,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setDeviceId(null);
     localStorage.removeItem("user");
     localStorage.removeItem("deviceId");
-    setAccessToken(null);
+    clearAccessToken();
     navigate("/auth?mode=login", { replace: true });
   };
 

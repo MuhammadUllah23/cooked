@@ -1,4 +1,4 @@
-import api, { getAccessToken, setAccessToken } from "./api";
+import api, { clearAccessToken, getAccessToken, setAccessToken } from "./api";
 import { handleApiError } from "./errorHandler";
 
 export enum UserSubscription {
@@ -87,7 +87,7 @@ export async function logoutUser(data: LogoutRequest): Promise<void> {
         Authorization: `Bearer ${getAccessToken()}`,
       },
     });
-    setAccessToken("");
+    clearAccessToken();
   } catch (error) {
     handleApiError(error);
   }
