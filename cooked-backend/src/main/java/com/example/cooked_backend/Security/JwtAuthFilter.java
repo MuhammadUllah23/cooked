@@ -35,6 +35,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         String path = request.getRequestURI();
 
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         boolean isPublic = Arrays.asList(SecurityConstants.PUBLIC_ENDPOINTS).contains(path);
 
         // Skip JWT check for public endpoints
