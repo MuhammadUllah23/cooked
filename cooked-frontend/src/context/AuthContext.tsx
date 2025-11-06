@@ -34,8 +34,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         .then((res) => {
           setAccessToken(res.accessToken);
         })
-        .catch(() => {
-          logoutUser({deviceId: storedDeviceId, global: false}); 
+        .catch((error) => {
+          logout(); 
         });
     }
   }, []);
@@ -54,7 +54,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     localStorage.removeItem("user");
     localStorage.removeItem("deviceId");
     setAccessToken(null);
-    window.location.href = "/login";
+    window.location.href = "/auth";
   };
 
   logoutSingleton = logout;

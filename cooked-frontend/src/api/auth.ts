@@ -1,4 +1,4 @@
-import api, { setAccessToken } from "./api";
+import api, { getAccessToken, setAccessToken } from "./api";
 import { handleApiError } from "./errorHandler";
 
 export enum UserSubscription {
@@ -83,6 +83,9 @@ export async function logoutUser(data: LogoutRequest): Promise<void> {
   try {
     await api.post("/auth/logout", data, {
       withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${getAccessToken()}`,
+      },
     });
     setAccessToken("");
   } catch (error) {
