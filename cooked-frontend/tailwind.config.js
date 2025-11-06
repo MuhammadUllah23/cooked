@@ -7,7 +7,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        background: "#2a3f57",        // --color-background
+        background: "#111827",        // gray-900 -background
         navbar: "#1e2e42",            // --color-navbar
         primary: "#4da6ff",           // --color-primary
         "primary-hover": "#3399ff",   // --color-primary-hover
