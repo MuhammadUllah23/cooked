@@ -2,7 +2,6 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { UserResponse } from "../api/auth";
 import { clearAccessToken, setAccessToken } from "../api/api";
 import { refresh, logoutUser } from "../api/auth";
-import { useNavigate } from "react-router-dom";
 
 interface AuthContextType {
     user: UserResponse | null;
@@ -19,7 +18,6 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
-    const navigate = useNavigate();  
     const [user, setUser] = useState<UserResponse | null>(null);
     const [deviceId, setDeviceId] = useState<string | null>(null);
 
@@ -57,7 +55,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     localStorage.removeItem("user");
     localStorage.removeItem("deviceId");
     clearAccessToken();
-    navigate("/auth?mode=login", { replace: true });
+    window.location.href = "/auth";
   };
 
   logoutSingleton = logout;
