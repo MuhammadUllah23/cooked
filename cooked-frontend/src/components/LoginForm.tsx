@@ -21,7 +21,7 @@ const LoginForm: React.FC = () => {
       const authData = await handleLogin(loginData);
 
       if (authData?.user?.id) {
-        navigate(`/${authData.user.id}/business/create/`);
+        navigate(`/${authData.user.id}/stores/`);
       }
     } catch (err) {
       console.error("Login failed:", err);

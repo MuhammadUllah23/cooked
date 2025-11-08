@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import LogoutButton from "../components/LogoutButton";
 
-const BusinessCreatePage = () => {
+const StoreMenuPage = () => {
   const { userId } = useParams();
 
   return (
@@ -18,4 +18,4 @@ const BusinessCreatePage = () => {
   );
 };
 
-export default BusinessCreatePage;
+export default StoreMenuPage;

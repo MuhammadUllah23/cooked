@@ -7,7 +7,7 @@ const PublicRoute = () => {
 
   // If already logged in, redirect them away from /auth
   if (isLoggedIn && user) {
-    return <Navigate to={`/${user.id}/business/create`} replace />;
+    return <Navigate to={`/${user.id}/stores`} replace />;
   }
 
   return <Outlet />;

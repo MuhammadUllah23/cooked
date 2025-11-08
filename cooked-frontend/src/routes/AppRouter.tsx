@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AuthPage from "../pages/AuthPage";
 import Home from "../pages/Home";
-import BusinessCreatePage from "../pages/BusinessCreatePage";
+import StoreMenuPage from "../pages/StoreMenuPage";
 import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
 
@@ -17,8 +17,7 @@ const AppRouter: React.FC = () => {
         </Route>
 
         <Route element={<ProtectedRoute />}>
-          <Route path="/:userId/business/create" element={<BusinessCreatePage />} />
-          <Route path="/:userId/business/update" element={<h1>hello</h1>} />
+          <Route path="/:userId/stores" element={<StoreMenuPage />} />
         </Route>
 
         <Route path="*" element={<h1>404 Page Not Found</h1>} />
