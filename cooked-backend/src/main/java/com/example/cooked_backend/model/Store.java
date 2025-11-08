@@ -4,14 +4,14 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.example.cooked_backend.dto.request.BusinessRequest;
+import com.example.cooked_backend.dto.request.StoreRequest;
 
 import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "business")
-public class Business {
+@Table(name = "store")
+public class Store {
 
     @Id
     @GeneratedValue
@@ -32,9 +32,9 @@ public class Business {
     private Instant updatedAt;
 
     // Constructor using only userId and name
-    public Business(BusinessRequest businessRequest) {
-        this.userId = businessRequest.getUserId();
-        this.name = businessRequest.getName();
+    public Store(StoreRequest storeRequest) {
+        this.userId = storeRequest.getUserId();
+        this.name = storeRequest.getName();
     }
 
     // Getters and Setters
