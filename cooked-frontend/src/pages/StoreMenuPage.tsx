@@ -7,7 +7,7 @@ const StoreMenuPage = () => {
   return (
     <div className="min-h-screen bg-background text-white flex flex-col items-center justify-center px-4">
       <div className="bg-navbar rounded-2xl p-8 w-full max-w-md shadow-lg">
-        <div>Create a business for user {userId}</div>
+        <div>Create a store for user {userId}</div>
         
       </div>
       

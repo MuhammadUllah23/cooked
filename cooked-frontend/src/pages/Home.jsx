@@ -11,7 +11,7 @@ function Home() {
           Simplify Your Inventory
         </h1>
         <h2 className="text-2xl font-medium text-text-muted mb-6">
-          Manage your small business inventory with ease
+          Manage your business inventory with ease
         </h2>
         <p className="text-lg text-text-muted max-w-xl mb-8">
           Cooked helps small businesses track, manage, and organize their stock
