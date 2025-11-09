@@ -2,6 +2,7 @@ import React from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
+import { ArrowLeftFromLine } from "lucide-react";
 
 const AuthPage: React.FC = () => {
   const navigate = useNavigate();
@@ -33,9 +34,10 @@ const AuthPage: React.FC = () => {
       <div className="mt-4 flex justify-center">
         <button
           onClick={() => navigate("/")}
-          className="text-sm text-btn-secondary hover:text-white transition-colors"
+          className="flex items-center gap-2 text-sm text-btn-secondary hover:text-white transition-colors"
         >
-          ← Back to Home
+          <ArrowLeftFromLine className="w-4 h-4" /> 
+          Back to Home
         </button>
       </div>
     </div>
