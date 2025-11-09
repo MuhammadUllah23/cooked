@@ -11,7 +11,7 @@ const LogoutButton: React.FC<LogoutButtonProps> = () => {
   return (
     <button
       onClick={handleLogout}
-      className={`text-sm text-btn-secondary hover:text-white transition-colors`}
+      className={`text-lg text-btn-secondary hover:text-white transition-colors`}
     >
       Logout
     </button>
