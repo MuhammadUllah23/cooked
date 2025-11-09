@@ -16,15 +16,11 @@ const LoginForm: React.FC = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    try {
-      const loginData = { email, password };
-      const authData = await handleLogin(loginData);
+    const loginData = { email, password };
+    const authData = await handleLogin(loginData);
 
-      if (authData?.user?.id) {
-        navigate(`/${authData.user.id}/stores/`);
-      }
-    } catch (err) {
-      console.error("Login failed:", err);
+    if (authData?.user?.id) {
+      navigate(`/${authData.user.id}/stores/`);
     }
   };
 

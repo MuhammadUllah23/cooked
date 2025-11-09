@@ -35,14 +35,10 @@ const RegisterForm: React.FC = () => {
       return;
     }
     
-    try {
-      const registrationData = { firstName, lastName, email, password };
-      const authData = await handleRegistration(registrationData);
-      if (authData?.user?.id) {
-        navigate(`/${authData.user.id}/stores/`);
-      }
-    } catch (err) {
-      console.error("Login failed:", err);
+    const registrationData = { firstName, lastName, email, password };
+    const authData = await handleRegistration(registrationData);
+    if (authData?.user?.id) {
+      navigate(`/${authData.user.id}/stores/`);
     }
   };
 
