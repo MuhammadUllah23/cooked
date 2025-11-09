@@ -7,6 +7,8 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.example.cooked_backend.dto.request.StoreRequest;
+import com.example.cooked_backend.exception.ErrorCode;
+import com.example.cooked_backend.exception.ServiceException;
 import com.example.cooked_backend.model.Store;
 import com.example.cooked_backend.repository.StoreRepository;
 
@@ -15,6 +17,8 @@ import com.example.cooked_backend.repository.StoreRepository;
 public class DefaultStoreService implements StoreService {
 
 	private final StoreRepository storeRepository;
+
+	private static final int STORE_LIMIT_PER_USER = 3;
 
 	// Constructor Injection
 	public DefaultStoreService(StoreRepository storeRepository) {
@@ -44,5 +48,4 @@ public class DefaultStoreService implements StoreService {
 	public List<Store> getAllStoresByUserId(UUID userId) {
 		return storeRepository.findAllByUserId(userId).orElse(List.of());
 	}
-
 }
