@@ -29,7 +29,7 @@ public class DefaultStoreService implements StoreService {
 	}
 
 	@Override
-	public Optional<Store> getStoreById(UUID storeId) {
+	public Optional<StoreResponse> getStoreById(UUID storeId) {
 		Optional<Store> store = storeRepository.findById(storeId);
 		return store;
 	}
@@ -50,7 +50,7 @@ public class DefaultStoreService implements StoreService {
 
 			Store createdstore =  storeRepository.save(store);
 			StoreResponse storeResponse = new StoreResponse(createdstore);
-			
+
 			return storeResponse;
 
 		} catch (DataIntegrityViolationException ex) {
@@ -66,7 +66,7 @@ public class DefaultStoreService implements StoreService {
 	}
 
 	@Override
-	public List<Store> getAllStoresByUserId(UUID userId) {
+	public List<StoreResponse> getAllStoresByUserId(UUID userId) {
 		return storeRepository.findAllByUserId(userId).orElse(List.of());
 	}
 
