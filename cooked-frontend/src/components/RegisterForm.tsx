@@ -2,24 +2,34 @@ import React, { FormEvent, useState } from "react";
 import PasswordInput from "./PasswordInput";
 import { useRegistrationHandler } from "../utils/handleRegistration";
 import ErrorMessage from "./ErrorMessage";
+import { useNavigate } from "react-router-dom";
 
 const RegisterForm: React.FC = () => {
   const { handleRegistration, loading, error, setError } = useRegistrationHandler();
-
+  const navigate = useNavigate();
+  
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   
-  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (password !== confirmPassword) {
         setError("Passwords do not match!");
       return;
     }
     
-    console.log("Register form submitted");
+    try {
+      const registrationData = { firstName, lastName, email, password };
+      const authData = await handleRegistration(registrationData);
+      if (authData?.user?.id) {
+        navigate(`/${authData.user.id}/stores/`);
+      }
+    } catch (err) {
+      console.error("Login failed:", err);
+    }
   };
 
   return (

@@ -1,4 +1,4 @@
-import { LoginRequest, RegisterRequest } from "../api/auth";
+import { LoginRequest, RegisterRequest, registerUser } from "../api/auth";
 import { loginUser } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
@@ -13,7 +13,7 @@ export function useRegistrationHandler() {
     setError(null);
 
     try {
-      const authData = await loginUser({
+      const authData = await registerUser({
         ...credentials
       });
 
