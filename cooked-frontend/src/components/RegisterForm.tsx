@@ -5,8 +5,12 @@ import ErrorMessage from "./ErrorMessage";
 
 const RegisterForm: React.FC = () => {
   const { handleRegistration, loading, error, setError } = useRegistrationHandler();
-   const [password, setPassword] = useState("");
-   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -25,9 +29,11 @@ const RegisterForm: React.FC = () => {
         <label htmlFor="firstName" className="text-white mb-1">First Name</label>
         <input
           id="firstName"
-          type="text"
+          type="firstName"
           placeholder="Enter your first name"
           className="p-3 rounded bg-background border border-btn-primary text-white"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
           required
         />
       </div>
@@ -38,6 +44,8 @@ const RegisterForm: React.FC = () => {
           type="text"
           placeholder="Enter your last name"
           className="p-3 rounded bg-background border border-btn-primary text-white"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
           required
         />
       </div>
@@ -49,6 +57,8 @@ const RegisterForm: React.FC = () => {
           type="email"
           placeholder="Enter your email"
           className="p-3 rounded bg-background border border-btn-primary text-white"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
       </div>
