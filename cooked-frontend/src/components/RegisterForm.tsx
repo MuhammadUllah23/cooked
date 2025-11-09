@@ -1,21 +1,26 @@
 import React, { FormEvent, useState } from "react";
 import PasswordInput from "./PasswordInput";
+import { useRegistrationHandler } from "../utils/handleRegistration";
+import ErrorMessage from "./ErrorMessage";
 
 const RegisterForm: React.FC = () => {
+  const { handleRegistration, loading, error, setError } = useRegistrationHandler();
    const [password, setPassword] = useState("");
    const [confirmPassword, setConfirmPassword] = useState("");
   
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     if (password !== confirmPassword) {
-        alert("Passwords do not match!");
+        setError("Passwords do not match!");
       return;
     }
+    
     console.log("Register form submitted");
   };
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+      {error && <ErrorMessage message={error} />}
       <div className="flex flex-col">
         <label htmlFor="firstName" className="text-white mb-1">First Name</label>
         <input
@@ -68,7 +73,7 @@ const RegisterForm: React.FC = () => {
         type="submit"
         className="bg-primary hover:bg-primary-hover text-white font-bold py-2 rounded transition"
       >
-        Register
+        {loading ? "Logging in..." : "Register"}
       </button>
     </form>
   );

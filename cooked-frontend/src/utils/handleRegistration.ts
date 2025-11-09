@@ -29,5 +29,5 @@ export function useRegistrationHandler() {
     }
   };
 
-  return { handleRegistration, loading, error };
+  return { handleRegistration, loading, error, setError };
 }
