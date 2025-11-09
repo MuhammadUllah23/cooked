@@ -48,4 +48,15 @@ public class DefaultStoreService implements StoreService {
 	public List<Store> getAllStoresByUserId(UUID userId) {
 		return storeRepository.findAllByUserId(userId).orElse(List.of());
 	}
+
+
+	private void checkStoreAlreadyExistsByName(String storeName, UUID userId) {
+        boolean nameExists = storeRepository.existsByUserIdAndNameIgnoreCase(userId, storeName);
+
+        if (nameExists == true) {
+            throw ServiceException.of(ErrorCode.USER_ALREADY_EXISTS)
+                        .addDetail("name", storeName)
+						.addDetail("userId", userId);
+        }
+    }
 }

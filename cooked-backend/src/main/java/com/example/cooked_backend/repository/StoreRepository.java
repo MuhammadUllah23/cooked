@@ -12,4 +12,5 @@ import java.util.Optional;
 @Repository
 public interface StoreRepository extends JpaRepository<Store, UUID> {
     Optional<List<Store>> findAllByUserId(UUID userid);
+    boolean existsByUserIdAndNameIgnoreCase(UUID userId, String name);
 }
