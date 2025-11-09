@@ -1,7 +1,7 @@
 import React, { FormEvent, useState } from "react";
 import PasswordInput from "./PasswordInput";
-import { useRegistrationHandler } from "../utils/handleRegistration";
-import ErrorMessage from "./ErrorMessage";
+import { useRegistrationHandler } from "../../utils/handleRegistration";
+import ErrorMessage from "../common/ErrorMessage";
 import { useNavigate } from "react-router-dom";
 
 const RegisterForm: React.FC = () => {

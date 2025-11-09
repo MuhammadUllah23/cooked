@@ -1,8 +1,8 @@
 import React, { FormEvent, useState } from "react";
-import { useLoginHandler } from "../utils/handleLogin";
+import { useLoginHandler } from "../../utils/handleLogin";
 import { useNavigate } from "react-router-dom";
 
-import ErrorMessage from "./ErrorMessage";
+import ErrorMessage from "../common/ErrorMessage";
 import PasswordInput from "./PasswordInput";
 
 const LoginForm: React.FC = () => {

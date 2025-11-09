@@ -1,5 +1,5 @@
 import React from "react";
-import { useLogoutHandler } from "../utils/handleLogout"; // adjust path
+import { useLogoutHandler } from "../../utils/handleLogout"; // adjust path
 
 interface LogoutButtonProps {
   className?: string; // optional for flexibility (e.g., custom placement)

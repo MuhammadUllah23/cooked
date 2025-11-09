@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import LogoutButton from "../components/LogoutButton";
+import LogoutButton from "../components/common/LogoutButton";
 
 const StoreMenuPage = () => {
   const { userId } = useParams();
