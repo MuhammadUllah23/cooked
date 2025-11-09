@@ -10,7 +10,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "store")
+@Table(name = "stores")
 public class Store {
 
     @Id

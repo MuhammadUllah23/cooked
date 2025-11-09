@@ -4,9 +4,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.cooked_backend.dto.request.StoreRequest;
+import com.example.cooked_backend.dto.response.StoreResponse;
 import com.example.cooked_backend.exception.ErrorCode;
 import com.example.cooked_backend.exception.ServiceException;
 import com.example.cooked_backend.model.Store;
@@ -32,11 +35,29 @@ public class DefaultStoreService implements StoreService {
 	}
 
 	@Override
-	public Store createStore(StoreRequest storeRequest) {
-		Store store = new Store(storeRequest);
+	@Transactional
+	public StoreResponse createStore(StoreRequest storeRequest, UUID userId) {
+		try {
+			checkStoreAlreadyExistsByName(storeRequest.getName(), userId);
 
-		Store createdstore =  storeRepository.save(store);
-		return createdstore;
+			long currentStoreCount = storeRepository.countByUserId(userId);
+			if (currentStoreCount >= STORE_LIMIT_PER_USER) {
+				throw ServiceException.of(ErrorCode.STORE_LIMIT_REACHED)
+				.addDetail("userId", userId);
+			}
+
+			Store store = new Store(storeRequest, userId);
+
+			Store createdstore =  storeRepository.save(store);
+			StoreResponse storeResponse = new StoreResponse(createdstore);
+			
+			return storeResponse;
+
+		} catch (DataIntegrityViolationException ex) {
+			throw ServiceException.of(ErrorCode.STORE_ALREADY_EXISTS)
+				.addDetail("userId", userId)
+				.addDetail("storeName", storeRequest.getName());
+		}
 	}
 
 	@Override
