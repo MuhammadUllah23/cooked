@@ -13,9 +13,23 @@ const RegisterForm: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  // Password validation checks
+  const hasUpperCase = /[A-Z]/.test(password);
+  const hasLowerCase = /[a-z]/.test(password);
+  const hasNumber = /[0-9]/.test(password);
+  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  const hasMinLength = password.length >= 8;
+
+  const isPasswordValid =
+    hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar && hasMinLength;
   
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!isPasswordValid) {
+      setError("Password does not meet the required criteria.");
+      return;
+    }
     if (password !== confirmPassword) {
         setError("Passwords do not match!");
       return;
@@ -81,6 +95,27 @@ const RegisterForm: React.FC = () => {
         onChange={(e) => setPassword(e.target.value)}
         required
       />
+
+      <div>
+        <ul className="text-sm mb-2 space-y-1">
+          <li className={hasUpperCase ? "text-green-600" : "text-red-500"}>
+            • At least one uppercase letter
+          </li>
+          <li className={hasLowerCase ? "text-green-600" : "text-red-500"}>
+            • At least one lowercase letter
+          </li>
+          <li className={hasNumber ? "text-green-600" : "text-red-500"}>
+            • At least one number
+          </li>
+          <li className={hasSpecialChar ? "text-green-600" : "text-red-500"}>
+            • At least one special character (!@#$%^&* etc.)
+          </li>
+          <li className={hasMinLength ? "text-green-600" : "text-red-500"}>
+            • Minimum 8 characters
+          </li>
+        </ul>
+      </div>
+
       <PasswordInput
         id="confirmPassword"
         label="Confirm Password"
