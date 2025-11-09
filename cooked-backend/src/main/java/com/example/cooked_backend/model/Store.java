@@ -32,8 +32,8 @@ public class Store {
     private Instant updatedAt;
 
     // Constructor using only userId and name
-    public Store(StoreRequest storeRequest) {
-        this.userId = storeRequest.getUserId();
+    public Store(StoreRequest storeRequest, UUID userId) {
+        this.userId = userId;
         this.name = storeRequest.getName();
     }
 
