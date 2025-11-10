@@ -1,5 +1,6 @@
 package com.example.cooked_backend.service;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -64,12 +65,31 @@ public class DefaultStoreService implements StoreService {
 	}
 
 	@Override
+	@Transactional
+	public StoreResponse updateStore(StoreRequest storeRequest, UUID storeId, UUID userId) {
+		Store store = storeRepository.findByIdAndUserId(storeId, userId)
+        							 .orElseThrow(() -> ServiceException.of(ErrorCode.STORE_NOT_FOUND)
+                                           .addDetail("storeId", storeId)
+                                           .addDetail("userId", userId));
+										   
+		checkStoreAlreadyExistsByName(storeRequest.getName(), userId);
+
+		store.setName(storeRequest.getName());
+		store.setUpdatedAt(Instant.now());
+
+		Store updatedStore = storeRepository.save(store);
+		StoreResponse storeResponse = new StoreResponse(updatedStore);
+
+		return storeResponse;
+	}
+
+	@Override
 	public void deleteStoreById(UUID storeId, UUID userId) {
 		Store store = storeRepository.findByIdAndUserId(storeId, userId)
 									.orElseThrow(() -> ServiceException.of(ErrorCode.STORE_NOT_FOUND)
 									.addDetail("storeId", storeId)
 									.addDetail("userId", userId));
-									
+
 		storeRepository.delete(store);
 	}
 
