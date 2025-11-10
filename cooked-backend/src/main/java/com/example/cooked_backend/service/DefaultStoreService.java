@@ -29,9 +29,12 @@ public class DefaultStoreService implements StoreService {
 	}
 
 	@Override
-	public Optional<StoreResponse> getStoreById(UUID storeId) {
-		Optional<Store> store = storeRepository.findById(storeId);
-		return store;
+	public StoreResponse getStoreById(UUID storeId, UUID userId) {
+		Store store = storeRepository.findByIdAndUserId(storeId, userId)
+			.orElseThrow(() -> ServiceException.of(ErrorCode.STORE_DOES_NOT_EXIST)
+											.addDetail("storeId", storeId)
+											.addDetail("userId", userId));
+    	return new StoreResponse(store);
 	}
 
 	@Override

@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface StoreRepository extends JpaRepository<Store, UUID> {
+    Optional<Store> findByIdAndUserId(UUID id, UUID userId);
     Optional<List<Store>> findAllByUserId(UUID userid);
     boolean existsByUserIdAndNameIgnoreCase(UUID userId, String name);
     long countByUserId(UUID userId);
