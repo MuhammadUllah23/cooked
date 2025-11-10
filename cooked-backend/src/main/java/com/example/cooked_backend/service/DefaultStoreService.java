@@ -70,7 +70,10 @@ public class DefaultStoreService implements StoreService {
 
 	@Override
 	public List<StoreResponse> getAllStoresByUserId(UUID userId) {
-		return storeRepository.findAllByUserId(userId).orElse(List.of());
+		List<Store> stores = storeRepository.findAllByUserId(userId);
+		List<StoreResponse> storeListResponse = stores.stream().map(StoreResponse::new).toList();
+
+		return storeListResponse;
 	}
 
 
