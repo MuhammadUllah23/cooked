@@ -31,7 +31,7 @@ public class DefaultStoreService implements StoreService {
 	@Override
 	public StoreResponse getStoreById(UUID storeId, UUID userId) {
 		Store store = storeRepository.findByIdAndUserId(storeId, userId)
-			.orElseThrow(() -> ServiceException.of(ErrorCode.STORE_DOES_NOT_EXIST)
+			.orElseThrow(() -> ServiceException.of(ErrorCode.STORE_NOT_FOUND)
 											.addDetail("storeId", storeId)
 											.addDetail("userId", userId));
     	return new StoreResponse(store);
@@ -64,8 +64,13 @@ public class DefaultStoreService implements StoreService {
 	}
 
 	@Override
-	public void deleteStoreById(UUID storeId) {
-		storeRepository.deleteById(storeId);
+	public void deleteStoreById(UUID storeId, UUID userId) {
+		Store store = storeRepository.findByIdAndUserId(storeId, userId)
+									.orElseThrow(() -> ServiceException.of(ErrorCode.STORE_NOT_FOUND)
+									.addDetail("storeId", storeId)
+									.addDetail("userId", userId));
+									
+		storeRepository.delete(store);
 	}
 
 	@Override

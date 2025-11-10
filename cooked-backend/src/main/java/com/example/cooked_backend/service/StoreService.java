@@ -10,5 +10,5 @@ public interface StoreService {
     List<StoreResponse> getAllStoresByUserId(UUID userId);
     StoreResponse getStoreById(UUID id, UUID userId);
     StoreResponse createStore(StoreRequest storeRequest, UUID userId);
-    void deleteStoreById(UUID id);
+    void deleteStoreById(UUID id, UUID userId);
 }

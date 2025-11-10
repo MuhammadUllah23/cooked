@@ -10,7 +10,7 @@ public enum ErrorCode {
     MISSING_REFRESH_TOKEN("Refresh Token is missing", HttpStatus.UNAUTHORIZED),
     INVALID_EMAIL_OR_PASSWORD("Invalid email or password", HttpStatus.UNAUTHORIZED),
     STORE_ALREADY_EXISTS("You already have a store with that name", HttpStatus.CONFLICT),
-    STORE_DOES_NOT_EXIST("Store does not exist", HttpStatus.NOT_FOUND),
+    STORE_NOT_FOUND("Store does not exist", HttpStatus.NOT_FOUND),
     STORE_LIMIT_REACHED("You have reached the store limit creation", HttpStatus.FORBIDDEN),
     
     ;
