@@ -10,7 +10,12 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "stores")
+@Table(
+    name = "stores",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_id", "name"})
+    }
+    )
 public class Store {
 
     @Id
