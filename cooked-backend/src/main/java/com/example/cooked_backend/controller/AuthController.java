@@ -1,5 +1,6 @@
 package com.example.cooked_backend.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +42,7 @@ public class AuthController {
 
         AuthResponse authResponse = defaultAuthService.loginUser(loginRequest, response);
 
-        return ResponseEntity.ok(authResponse);
+        return ResponseEntity.status(HttpStatus.CREATED).body(authResponse);
     }
 
     @PostMapping("/login")
