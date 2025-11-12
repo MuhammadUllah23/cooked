@@ -1,8 +1,10 @@
 import { useParams, useNavigate } from "react-router-dom";
 import LogoutButton from "../components/common/LogoutButton";
 import { CirclePlus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import StoreForm from "../components/forms/storeForm";
+import { useGetStoresByUserHandler } from "../hooks/useStoresHandlers";
+import StoreList from "../components/store/StoreList";
 
 const StoreMenuPage = () => {
   const { userId } = useParams();
@@ -10,6 +12,13 @@ const StoreMenuPage = () => {
   
   const [showForm, setShowForm] = useState(false);
   const [storeName, setStoreName] = useState("");
+
+  const { stores, handleGetStoresByUser, loading, error } = useGetStoresByUserHandler();
+
+
+  useEffect(() => {
+    if (userId) handleGetStoresByUser(userId);
+  }, [userId]);
 
   const handleAddStoreClick = () => {
     setShowForm(true);
@@ -28,6 +37,7 @@ const StoreMenuPage = () => {
           <h1 className="text-3xl font-bold text-center mb-6">
             Stores
           </h1>
+          <StoreList stores={stores} loading={loading} error={error} />
         </div>
 
         {/* Add Store Button */}
