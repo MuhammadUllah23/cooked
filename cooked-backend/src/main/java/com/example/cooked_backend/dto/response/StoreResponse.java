@@ -7,11 +7,13 @@ import com.example.cooked_backend.model.Store;
 public class StoreResponse {
     private UUID id;
     private String name;
+    private UUID userId;
 
 
     public StoreResponse (Store store) {
         this.id = store.getId();
         this.name = store.getName();
+        this.userId = store.getUserId();
     }
 
     public UUID getId() {
@@ -27,5 +29,12 @@ public class StoreResponse {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public UUID getUserId() {
+        return userId;
+    }
+    public void setUserId(UUID userId) {
+        this.userId = userId;
     }
 }
