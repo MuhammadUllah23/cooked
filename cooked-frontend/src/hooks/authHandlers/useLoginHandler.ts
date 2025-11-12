@@ -1,6 +1,6 @@
-import { LoginRequest } from "../api/auth";
-import { loginUser } from "../api/auth";
-import { useAuth } from "../context/AuthContext";
+import { LoginRequest } from "../../api/auth";
+import { loginUser } from "../../api/auth";
+import { useAuth } from "../../context/AuthContext";
 import { useState } from "react";
 
 export function useLoginHandler() {

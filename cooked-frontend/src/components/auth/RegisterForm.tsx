@@ -1,6 +1,6 @@
 import React, { FormEvent, useState } from "react";
 import PasswordInput from "./PasswordInput";
-import { useRegistrationHandler } from "../../utils/handleRegistration";
+import { useRegistrationHandler } from "../../hooks/authHandlers/useRegistrationHandler";
 import ErrorMessage from "../common/ErrorMessage";
 import { useNavigate } from "react-router-dom";
 

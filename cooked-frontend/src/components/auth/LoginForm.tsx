@@ -1,5 +1,5 @@
 import React, { FormEvent, useState } from "react";
-import { useLoginHandler } from "../../utils/handleLogin";
+import { useLoginHandler } from "../../hooks/authHandlers/useLoginHandler";
 import { useNavigate } from "react-router-dom";
 
 import ErrorMessage from "../common/ErrorMessage";
