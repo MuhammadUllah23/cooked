@@ -1,5 +1,5 @@
 import api, { clearAccessToken, getAccessToken, setAccessToken } from "./api";
-import { handleApiError } from "./errorHandler";
+import { handleApiError } from "./util/errorHandler";
 
 export enum UserSubscription {
   FREE = "FREE",
