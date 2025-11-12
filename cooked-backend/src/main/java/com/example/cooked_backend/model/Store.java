@@ -36,6 +36,8 @@ public class Store {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
+    public Store() {}
+    
     // Constructor using only userId and name
     public Store(StoreRequest storeRequest, UUID userId) {
         this.userId = userId;

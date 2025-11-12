@@ -106,7 +106,7 @@ public class DefaultStoreService implements StoreService {
         boolean nameExists = storeRepository.existsByUserIdAndNameIgnoreCase(userId, storeName);
 
         if (nameExists == true) {
-            throw ServiceException.of(ErrorCode.USER_ALREADY_EXISTS)
+            throw ServiceException.of(ErrorCode.STORE_ALREADY_EXISTS)
                         .addDetail("name", storeName)
 						.addDetail("userId", userId);
         }
