@@ -1,4 +1,4 @@
-import api from "./api";
+import api, { getAccessToken } from "./api";
 import { AxiosResponse } from "axios";
 import { handleApiError } from "./util/errorHandler";
 
@@ -14,7 +14,7 @@ export interface StoreResponse {
 
 export const createStore = async (userId: string, storeRequest: StoreRequest): Promise<StoreResponse | null> => {
   try {
-    const response: AxiosResponse<StoreResponse> = await api.post(`/stores/${userId}`, storeRequest);
+    const response: AxiosResponse<StoreResponse> = await api.post(`/store`, storeRequest);
     return response.data;
   } catch (error) {
     handleApiError(error);
@@ -25,7 +25,11 @@ export const createStore = async (userId: string, storeRequest: StoreRequest): P
 // get stores by user
 export const getStoresByUser = async (userId: string): Promise<StoreResponse[] | null> => {
   try {
-    const response: AxiosResponse<StoreResponse[]> = await api.get(`/stores/user/${userId}`);
+    const response: AxiosResponse<StoreResponse[]> = await api.get(`/store`, {
+    headers: {
+      Authorization: `Bearer ${getAccessToken()}`,
+    },
+  });
     return response.data;
   } catch (error) {
     handleApiError(error);
@@ -36,7 +40,7 @@ export const getStoresByUser = async (userId: string): Promise<StoreResponse[] |
 // get store by store ID
 export const getStoreById = async (id: string): Promise<StoreResponse | null> => {
   try {
-    const response: AxiosResponse<StoreResponse> = await api.get(`/stores/${id}`);
+    const response: AxiosResponse<StoreResponse> = await api.get(`/store/${id}`);
     return response.data;
   } catch (error) {
     handleApiError(error);
@@ -47,7 +51,7 @@ export const getStoreById = async (id: string): Promise<StoreResponse | null> =>
 
 export const updateStore = async (id: string, storeRequest: StoreRequest): Promise<StoreResponse | null> => {
   try {
-    const response: AxiosResponse<StoreResponse> = await api.put(`/stores/${id}`, storeRequest);
+    const response: AxiosResponse<StoreResponse> = await api.put(`/store/${id}`, storeRequest);
     return response.data;
   } catch (error) {
     handleApiError(error);
@@ -58,7 +62,7 @@ export const updateStore = async (id: string, storeRequest: StoreRequest): Promi
 
 export const deleteStore = async (id: string): Promise<boolean> => {
   try {
-    await api.delete(`/stores/${id}`);
+    await api.delete(`/store/${id}`);
     return true;
   } catch (error) {
     handleApiError(error);
