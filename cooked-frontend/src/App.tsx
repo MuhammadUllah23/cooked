@@ -7,7 +7,7 @@ const App: React.FC = () => {
   const { isLoading } = useAuth();
 
   if (isLoading) {
-    return <LoadingScreen />;
+    return <LoadingScreen fullScreen />;
   }
 
   return <AppRouter />;

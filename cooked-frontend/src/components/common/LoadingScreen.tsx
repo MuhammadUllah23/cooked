@@ -1,9 +1,17 @@
-import React from "react";
 import { motion } from "framer-motion";
 
-const LoadingScreen: React.FC = () => {
+interface LoadingScreenProps {
+  fullScreen?: boolean; // if true, covers the entire viewport
+}
+
+const LoadingScreen: React.FC<LoadingScreenProps> = ({ fullScreen = false }) => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900">
+    <div
+      className={`
+        flex flex-col items-center justify-center
+        ${fullScreen ? "fixed top-0 left-0 w-full h-full bg-gray-900 z-50" : "w-full h-full"}
+      `}
+    >
       <motion.div
         className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"
         initial={{ opacity: 0 }}
