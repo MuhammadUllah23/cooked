@@ -3,17 +3,16 @@ import LogoutButton from "../components/common/LogoutButton";
 import { CirclePlus } from "lucide-react";
 import { useEffect, useState } from "react";
 import StoreForm from "../components/forms/storeForm";
-import { useGetStoresByUserHandler } from "../hooks/useStoresHandlers";
+import { useGetStoresByUserHandler, useCreateStoreHandler } from "../hooks/useStoresHandlers";
 import StoreList from "../components/store/StoreList";
 
 const StoreMenuPage = () => {
   const { userId } = useParams();
-  const navigate = useNavigate();
   
-  const [showForm, setShowForm] = useState(false);
-  const [storeName, setStoreName] = useState("");
+  const [showStoreForm, setShowStoreForm] = useState(false);
 
   const { stores, handleGetStoresByUser, loading, error } = useGetStoresByUserHandler();
+  const { handleCreateStore } = useCreateStoreHandler();
 
 
   useEffect(() => {
@@ -21,13 +20,15 @@ const StoreMenuPage = () => {
   }, [userId]);
 
   const handleAddStoreClick = () => {
-    setShowForm(true);
+    setShowStoreForm(true);
   };
 
-  const handleCreateStore = async (storeName: string) => {
-    console.log("New store for user", userId, ":", storeName);
-    // TODO: call API to create the store
-    setShowForm(false);
+  const onCreate = async (storeName: string) => {
+    if (!userId) return;
+
+    await handleCreateStore(userId, { name: storeName }); 
+
+    setShowStoreForm(false); 
   };
 
   return (
@@ -42,7 +43,7 @@ const StoreMenuPage = () => {
 
         {/* Add Store Button */}
         <div className="w-full flex flex-col items-center mt-4">
-          {!showForm ? (
+          {!showStoreForm ? (
             <button
               onClick={handleAddStoreClick}
               className="flex items-center gap-2 border border-white rounded-full px-4 py-2 text-btn-primary bg-background hover:bg-primary-hover hover:text-white transition-colors"
@@ -53,8 +54,8 @@ const StoreMenuPage = () => {
           ) : (
             <StoreForm
               userId={userId}
-              onCancel={() => setShowForm(false)}
-              onCreate={handleCreateStore}
+              onCancel={() => setShowStoreForm(false)}
+              onSubmit={onCreate}
             />
             )}
           </div>
