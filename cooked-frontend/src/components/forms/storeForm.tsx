@@ -1,26 +1,35 @@
 import { useState } from "react";
 
 interface StoreFormProps {
-  userId: string | undefined;
+  userId?: string;
+  initialName?: string;
+  mode?: "create" | "edit";
   onCancel: () => void;
-  onCreate: (storeName: string) => void;
+  onSubmit: (storeName: string) => void;
 }
 
-const StoreForm: React.FC<StoreFormProps> = ({ userId, onCancel, onCreate }) => {
-  const [storeName, setStoreName] = useState("");
+const StoreForm: React.FC<StoreFormProps> = ({
+  userId,
+  initialName = "",
+  mode = "create",
+  onCancel,
+  onSubmit,
+}) => {
+
+  const [storeName, setStoreName] = useState(initialName);
+  const buttonLabel = mode === "edit" ? "Save" : "Create";
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!storeName.trim()) return;
 
-    onCreate(storeName);
-
-    setStoreName(""); // reset input
+    onSubmit(storeName);
   };
 
   return (
     <div className="w-full max-w-md flex flex-col gap-3 mt-4">
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+
         <input
           type="text"
           placeholder="Enter store name"
@@ -29,6 +38,7 @@ const StoreForm: React.FC<StoreFormProps> = ({ userId, onCancel, onCreate }) => 
           className="p-3 rounded bg-background border border-btn-primary text-white"
           required
         />
+
         <div className="flex gap-4 justify-end">
           <button
             type="button"
@@ -37,13 +47,15 @@ const StoreForm: React.FC<StoreFormProps> = ({ userId, onCancel, onCreate }) => 
           >
             Cancel
           </button>
+
           <button
             type="submit"
             className="bg-primary hover:bg-primary-hover text-white font-bold py-3 px-6 rounded transition"
           >
-            Create
+            {buttonLabel}
           </button>
         </div>
+
       </form>
     </div>
   );
