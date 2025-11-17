@@ -11,7 +11,7 @@ const StoreMenuPage = () => {
   
   const [showStoreForm, setShowStoreForm] = useState(false);
 
-  const { stores, handleGetStoresByUser, loading, error } = useGetStoresByUserHandler();
+  const { stores, handleGetStoresByUser, loading, error, setStores } = useGetStoresByUserHandler();
   const { handleCreateStore } = useCreateStoreHandler();
 
 
@@ -26,7 +26,8 @@ const StoreMenuPage = () => {
   const onCreate = async (storeName: string) => {
     if (!userId) return;
 
-    await handleCreateStore(userId, { name: storeName }); 
+    const newStore = await handleCreateStore(userId, { name: storeName });
+    if (newStore) setStores(prev => [...prev, newStore]);
 
     setShowStoreForm(false); 
   };

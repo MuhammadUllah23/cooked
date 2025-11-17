@@ -12,18 +12,18 @@ import {
 export function useCreateStoreHandler() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [store, setStore] = useState<StoreResponse | null>(null);
 
-  const handleCreateStore = async (userId: string, data: StoreRequest) => {
+  const handleCreateStore = async (userId: string, data: StoreRequest): Promise<StoreResponse | null> => {
     setLoading(true);
     setError(null);
 
     try {
       const store = await createStore(userId, data);
-      if (store) setStore(store);
+      return store ?? null;
     } catch (err) {
       const message = (err as Error).message || "Failed to create store.";
       setError(message);
+      return null
     } finally {
       setLoading(false);
     }
@@ -52,7 +52,7 @@ export function useGetStoresByUserHandler() {
     }
   };
 
-  return { stores, handleGetStoresByUser, loading, error, setError };
+  return { stores, handleGetStoresByUser, loading, error, setError , setStores};
 }
 
 export function useGetStoreByIdHandler() {
