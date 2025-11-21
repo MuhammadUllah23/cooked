@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useCreateStoreHandler } from "../../hooks/useStoresHandlers";
 import { StoreResponse } from "../../api/store";
+import ErrorMessage from "../common/ErrorMessage";
 
 interface StoreFormProps {
   userId?: string;
@@ -21,7 +22,7 @@ const StoreForm: React.FC<StoreFormProps> = ({
   const [storeName, setStoreName] = useState(initialName);
   const buttonLabel = mode === "edit" ? "Save" : "Create";
 
-  const { handleCreateStore } = useCreateStoreHandler()
+  const { handleCreateStore, error } = useCreateStoreHandler()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,7 +36,7 @@ const StoreForm: React.FC<StoreFormProps> = ({
   return (
     <div className="w-full max-w-md flex flex-col gap-3 mt-4">
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-
+        {error && <ErrorMessage message={error} />}
         <input
           type="text"
           placeholder="Enter store name"
