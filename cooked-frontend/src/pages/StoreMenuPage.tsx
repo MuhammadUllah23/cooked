@@ -12,7 +12,6 @@ const StoreMenuPage = () => {
   const [showStoreForm, setShowStoreForm] = useState(false);
 
   const { stores, handleGetStoresByUser, loading, error, setStores } = useGetStoresByUserHandler();
-  const { handleCreateStore } = useCreateStoreHandler();
 
 
   useEffect(() => {
@@ -21,15 +20,6 @@ const StoreMenuPage = () => {
 
   const handleAddStoreClick = () => {
     setShowStoreForm(true);
-  };
-
-  const onCreate = async (storeName: string) => {
-    if (!userId) return;
-
-    const newStore = await handleCreateStore(userId, { name: storeName });
-    if (newStore) setStores(prev => [...prev, newStore]);
-
-    setShowStoreForm(false); 
   };
 
   return (
@@ -56,7 +46,8 @@ const StoreMenuPage = () => {
             <StoreForm
               userId={userId}
               onCancel={() => setShowStoreForm(false)}
-              onSubmit={onCreate}
+              setStores={setStores}
+              mode="create"
             />
             )}
           </div>

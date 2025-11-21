@@ -1,11 +1,13 @@
 import { useState } from "react";
+import { useCreateStoreHandler } from "../../hooks/useStoresHandlers";
+import { StoreResponse } from "../../api/store";
 
 interface StoreFormProps {
   userId?: string;
   initialName?: string;
   mode?: "create" | "edit";
   onCancel: () => void;
-  onSubmit: (storeName: string) => void;
+  setStores: React.Dispatch<React.SetStateAction<StoreResponse[]>>;
 }
 
 const StoreForm: React.FC<StoreFormProps> = ({
@@ -13,17 +15,21 @@ const StoreForm: React.FC<StoreFormProps> = ({
   initialName = "",
   mode = "create",
   onCancel,
-  onSubmit,
+  setStores,
 }) => {
 
   const [storeName, setStoreName] = useState(initialName);
   const buttonLabel = mode === "edit" ? "Save" : "Create";
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!storeName.trim()) return;
+  const { handleCreateStore } = useCreateStoreHandler()
 
-    onSubmit(storeName);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!userId) return;
+
+    const newStore = await handleCreateStore(userId, { name: storeName });
+    if (newStore) setStores(prev => [...prev, newStore]);
+
   };
 
   return (
