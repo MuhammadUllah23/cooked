@@ -11,9 +11,9 @@ const StoreMenuPage = () => {
   const { userId } = useParams();
   
   const [showStoreForm, setShowStoreForm] = useState(false);
-  const [editingStore, setEditingStore] = useState<StoreResponse | null>(null);
+  const [editingStore, setEditingStore] = useState<string>("");
 
-  const handleEditStore = (store: StoreResponse) => {
+  const handleEditStore = (store: string) => {
     setEditingStore(store);
     setShowStoreForm(true);
   };
@@ -54,7 +54,8 @@ const StoreMenuPage = () => {
               userId={userId}
               onCancel={() => setShowStoreForm(false)}
               setStores={setStores}
-              mode="create"
+              mode={editingStore ? "edit" : "create"}
+              initialName={editingStore}
             />
             )}
           </div>

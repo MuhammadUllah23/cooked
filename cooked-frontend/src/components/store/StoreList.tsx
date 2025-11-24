@@ -7,7 +7,7 @@ interface StoreListProps {
   stores: StoreResponse[];
   loading: boolean;
   error: string | null;
-  onEdit: (store: StoreResponse) => void;
+  onEdit: (store: string) => void;
 }
 
 const StoreList: React.FC<StoreListProps> = ({ stores, loading, error, onEdit, }) => {
@@ -40,7 +40,7 @@ const StoreList: React.FC<StoreListProps> = ({ stores, loading, error, onEdit, }
           </span>
 
           <button
-            onClick={() => onEdit(store)}
+            onClick={() => onEdit(store.name)}
             className="text-sm bg-primary px-3 py-1 rounded hover:bg-primary-hover transition"
           >
             Edit
