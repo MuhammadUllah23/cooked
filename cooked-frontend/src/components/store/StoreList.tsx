@@ -7,9 +7,10 @@ interface StoreListProps {
   stores: StoreResponse[];
   loading: boolean;
   error: string | null;
+  onEdit: (store: StoreResponse) => void;
 }
 
-const StoreList: React.FC<StoreListProps> = ({ stores, loading, error }) => {
+const StoreList: React.FC<StoreListProps> = ({ stores, loading, error, onEdit, }) => {
   const navigate = useNavigate();
 
   if (loading) {
@@ -29,10 +30,21 @@ const StoreList: React.FC<StoreListProps> = ({ stores, loading, error }) => {
       {stores.map((store) => (
         <li
           key={store.id}
-          onClick={() => navigate(`/stores/${store.id}`)}
-          className="border-b border-gray-700 py-2 cursor-pointer hover:text-primary transition-colors"
+          className="flex justify-between items-center border-b border-gray-700 py-2"
         >
-          {store.name}
+          <span
+            onClick={() => navigate(`/stores/${store.id}`)}
+            className="cursor-pointer hover:text-primary transition-colors"
+          >
+            {store.name}
+          </span>
+
+          <button
+            onClick={() => onEdit(store)}
+            className="text-sm bg-primary px-3 py-1 rounded hover:bg-primary-hover transition"
+          >
+            Edit
+          </button>
         </li>
       ))}
     </ul>

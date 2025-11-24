@@ -5,11 +5,18 @@ import { useEffect, useState } from "react";
 import StoreForm from "../components/forms/storeForm";
 import { useGetStoresByUserHandler, useCreateStoreHandler } from "../hooks/useStoresHandlers";
 import StoreList from "../components/store/StoreList";
+import { StoreResponse } from "../api/store";
 
 const StoreMenuPage = () => {
   const { userId } = useParams();
   
   const [showStoreForm, setShowStoreForm] = useState(false);
+  const [editingStore, setEditingStore] = useState<StoreResponse | null>(null);
+
+  const handleEditStore = (store: StoreResponse) => {
+    setEditingStore(store);
+    setShowStoreForm(true);
+  };
 
   const { stores, handleGetStoresByUser, loading, error, setStores } = useGetStoresByUserHandler();
 
@@ -29,7 +36,7 @@ const StoreMenuPage = () => {
           <h1 className="text-3xl font-bold text-center mb-6">
             Stores
           </h1>
-          <StoreList stores={stores} loading={loading} error={error} />
+          <StoreList stores={stores} loading={loading} error={error} onEdit={handleEditStore} />
         </div>
 
         {/* Add Store Button */}
