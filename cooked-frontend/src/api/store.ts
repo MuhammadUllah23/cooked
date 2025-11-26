@@ -2,6 +2,11 @@ import api, { getAccessToken } from "./api";
 import { AxiosResponse } from "axios";
 import { handleApiError } from "./util/errorHandler";
 
+export interface Store {
+  id: string;
+  name: string;
+}
+
 export interface StoreRequest {
   name: string;
 }
