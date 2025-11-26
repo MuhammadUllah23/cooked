@@ -1,13 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { StoreResponse } from "../../api/store";
+import { Store, StoreResponse } from "../../api/store";
 import LoadingScreen from "../common/LoadingScreen";
 
 interface StoreListProps {
   stores: StoreResponse[];
   loading: boolean;
   error: string | null;
-  onEdit: (store: string) => void;
+  onEdit: (store: Store) => void;
 }
 
 const StoreList: React.FC<StoreListProps> = ({ stores, loading, error, onEdit, }) => {
@@ -40,7 +40,7 @@ const StoreList: React.FC<StoreListProps> = ({ stores, loading, error, onEdit, }
           </span>
 
           <button
-            onClick={() => onEdit(store.name)}
+            onClick={() => onEdit(store)}
             className="text-sm bg-primary px-3 py-1 rounded hover:bg-primary-hover transition"
           >
             Edit

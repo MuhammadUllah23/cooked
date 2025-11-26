@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useCreateStoreHandler } from "../../hooks/useStoresHandlers";
-import { StoreResponse } from "../../api/store";
+import { useCreateStoreHandler, useUpdateStoreHandler } from "../../hooks/useStoresHandlers";
+import { Store, StoreResponse } from "../../api/store";
 import ErrorMessage from "../common/ErrorMessage";
 
 interface StoreFormProps {
@@ -9,6 +9,7 @@ interface StoreFormProps {
   mode?: "create" | "edit";
   onCancel: () => void;
   setStores: React.Dispatch<React.SetStateAction<StoreResponse[]>>;
+  store?: Store | null;
 }
 
 const StoreForm: React.FC<StoreFormProps> = ({
@@ -17,20 +18,28 @@ const StoreForm: React.FC<StoreFormProps> = ({
   mode = "create",
   onCancel,
   setStores,
+  store,
 }) => {
 
   const [storeName, setStoreName] = useState(initialName);
   const buttonLabel = mode === "edit" ? "Save" : "Create";
 
-  const { handleCreateStore, error } = useCreateStoreHandler()
+  const { handleCreateStore, error: createError } = useCreateStoreHandler();
+  const { handleUpdateStore, error: updateError } = useUpdateStoreHandler();
+
+  const error = mode === "edit" ? updateError : createError;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userId) return;
 
-    const newStore = await handleCreateStore(userId, { name: storeName });
-    if (newStore) setStores(prev => [...prev, newStore]);
-
+    if (mode == "create") {
+      const newStore = await handleCreateStore(userId, { name: storeName });
+      if (newStore) setStores(prev => [...prev, newStore]);
+    } else if (mode == "edit" && store){
+      const updatedStore = await handleUpdateStore(store?.id, {name: storeName});
+      setStores(prev => prev.map(store => store.id === updatedStore?.id ? updatedStore : store));
+    }
   };
 
   return (

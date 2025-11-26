@@ -5,15 +5,15 @@ import { useEffect, useState } from "react";
 import StoreForm from "../components/forms/storeForm";
 import { useGetStoresByUserHandler, useCreateStoreHandler } from "../hooks/useStoresHandlers";
 import StoreList from "../components/store/StoreList";
-import { StoreResponse } from "../api/store";
+import { Store } from "../api/store";
 
 const StoreMenuPage = () => {
   const { userId } = useParams();
   
   const [showStoreForm, setShowStoreForm] = useState(false);
-  const [editingStore, setEditingStore] = useState<string>("");
+  const [editingStore, setEditingStore] = useState<Store>();
 
-  const handleEditStore = (store: string) => {
+  const handleEditStore = (store: Store) => {
     setEditingStore(store);
     setShowStoreForm(true);
   };
@@ -55,7 +55,8 @@ const StoreMenuPage = () => {
               onCancel={() => setShowStoreForm(false)}
               setStores={setStores}
               mode={editingStore ? "edit" : "create"}
-              initialName={editingStore}
+              initialName={editingStore?.name}
+              store={editingStore ? editingStore : null}
             />
             )}
           </div>

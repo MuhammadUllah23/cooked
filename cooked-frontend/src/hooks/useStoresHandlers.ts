@@ -91,6 +91,7 @@ export function useUpdateStoreHandler() {
     try {
       const updated = await updateStore(storeId, data);
       if (updated) setStore(updated);
+      return store
     } catch (err) {
       const message = (err as Error).message || "Failed to update store.";
       setError(message);
