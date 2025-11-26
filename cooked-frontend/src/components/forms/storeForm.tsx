@@ -38,8 +38,10 @@ const StoreForm: React.FC<StoreFormProps> = ({
       if (newStore) setStores(prev => [...prev, newStore]);
     } else if (mode == "edit" && store){
       const updatedStore = await handleUpdateStore(store?.id, {name: storeName});
-      setStores(prev => prev.map(store => store.id === updatedStore?.id ? updatedStore : store));
+      setStores(prev => prev.map(store => store.id == updatedStore?.id ? updatedStore : store));
     }
+
+    onCancel();
   };
 
   return (
