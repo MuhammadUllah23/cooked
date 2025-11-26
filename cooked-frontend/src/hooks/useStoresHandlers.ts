@@ -84,17 +84,18 @@ export function useUpdateStoreHandler() {
   const [store, setStore] = useState<StoreResponse | null>(null);
 
 
-  const handleUpdateStore = async (storeId: string, data: StoreRequest) => {
+  const handleUpdateStore = async (storeId: string, data: StoreRequest): Promise<StoreResponse | null> => {
     setLoading(true);
     setError(null);
 
     try {
-      const updated = await updateStore(storeId, data);
-      if (updated) setStore(updated);
-      return store
+      const updatedStore = await updateStore(storeId, data);
+      if (updatedStore) setStore(updatedStore);
+      return updatedStore ?? null
     } catch (err) {
       const message = (err as Error).message || "Failed to update store.";
       setError(message);
+      return null;
     } finally {
       setLoading(false);
     }
