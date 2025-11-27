@@ -22,6 +22,8 @@ const StoreForm: React.FC<StoreFormProps> = ({
 }) => {
 
   const [storeName, setStoreName] = useState(initialName);
+  const [validationError, setValidationError] = useState<string | null>(null);
+
   const buttonLabel = mode === "edit" ? "Save" : "Create";
 
   const { handleCreateStore, error: createError } = useCreateStoreHandler();
@@ -32,6 +34,18 @@ const StoreForm: React.FC<StoreFormProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userId) return;
+
+    if (storeName.trim() === "") {
+      setValidationError("Store name cannot be blank.");
+      return;
+    }
+
+    if (storeName.length > 100) {
+      setValidationError("Store name cannot exceed 100 characters.");
+      return;
+    }
+
+    setValidationError(null);
 
     if (mode == "create") {
       const newStore = await handleCreateStore(userId, { name: storeName });
