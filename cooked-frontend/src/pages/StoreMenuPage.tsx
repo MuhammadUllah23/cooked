@@ -11,10 +11,18 @@ const StoreMenuPage = () => {
   const { userId } = useParams();
   
   const [showStoreForm, setShowStoreForm] = useState(false);
-  const [editingStore, setEditingStore] = useState<Store>();
+  const [editingStore, setEditingStore] = useState<Store | null>();
+  const [storeFormMode, setStoreFormMode] = useState<"create" | "edit">();
 
   const handleEditStore = (store: Store) => {
+    setStoreFormMode("edit");
     setEditingStore(store);
+    setShowStoreForm(true);
+  };
+
+  const handleAddStoreClick = () => {
+    setStoreFormMode("create");
+    setEditingStore(null);
     setShowStoreForm(true);
   };
 
@@ -24,10 +32,6 @@ const StoreMenuPage = () => {
   useEffect(() => {
     if (userId) handleGetStoresByUser(userId);
   }, [userId]);
-
-  const handleAddStoreClick = () => {
-    setShowStoreForm(true);
-  };
 
   return (
     <div className="min-h-screen bg-background text-white flex flex-col items-center justify-center px-4">
@@ -54,9 +58,9 @@ const StoreMenuPage = () => {
               userId={userId}
               onCancel={() => setShowStoreForm(false)}
               setStores={setStores}
-              mode={editingStore ? "edit" : "create"}
+              mode={storeFormMode}
               initialName={editingStore?.name}
-              store={editingStore ? editingStore : null}
+              store={storeFormMode ? editingStore : null}
             />
             )}
           </div>
