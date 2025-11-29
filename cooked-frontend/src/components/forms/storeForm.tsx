@@ -29,6 +29,9 @@ const StoreForm: React.FC<StoreFormProps> = ({
   const { handleCreateStore, error: createError } = useCreateStoreHandler();
   const { handleUpdateStore, error: updateError } = useUpdateStoreHandler();
 
+  const apiError = mode === "edit" ? updateError : createError;
+  const error = validationError || apiError;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userId) return;
@@ -53,11 +56,11 @@ const StoreForm: React.FC<StoreFormProps> = ({
       setStores(prev => prev.map(store => store.id == updatedStore?.id ? updatedStore : store));
     }
 
-    onCancel();
+    if(!!error){
+      onCancel();  
+    }
+    
   };
-  
-  const apiError = mode === "edit" ? updateError : createError;
-  const error = validationError || apiError;
 
   return (
     <div className="w-full max-w-md flex flex-col gap-3 mt-4">
