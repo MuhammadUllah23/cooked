@@ -7,6 +7,9 @@ import { useNavigate } from "react-router-dom";
 const RegisterForm: React.FC = () => {
   const { handleRegistration, loading, error, setError } = useRegistrationHandler();
   const navigate = useNavigate();
+
+  const [validationError, setValidationError] = useState<string | null>(null);
+
   
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -19,21 +22,45 @@ const RegisterForm: React.FC = () => {
   const hasLowerCase = /[a-z]/.test(password);
   const hasNumber = /[0-9]/.test(password);
   const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-  const hasMinLength = password.length >= 8;
+  const hasMinMaxLength = password.length >= 8 && password.length <= 255;
 
   const isPasswordValid =
-    hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar && hasMinLength;
+    hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar && hasMinMaxLength;
   
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    setError(null);
+
+    if (firstName.length > 100) {
+      setValidationError("First name cannot exceed 100 characters.");
+      return;
+    }
+    if (lastName.length > 100) {
+      setValidationError("Last name cannot exceed 100 characters.");
+      return;
+    }
+
+    if (email.length > 255) {
+      setValidationError("Email cannot exceed 255 characters.");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setValidationError("Please enter a valid email address.");
+      return;
+    }
+
     if (!isPasswordValid) {
-      setError("Password does not meet the required criteria.");
+      setValidationError("Password does not meet the required criteria.");
       return;
     }
+
     if (password !== confirmPassword) {
-        setError("Passwords do not match!");
+      setValidationError("Passwords do not match.");
       return;
     }
+
+    setValidationError(null);
     
     const registrationData = { firstName, lastName, email, password };
     const authData = await handleRegistration(registrationData);
@@ -44,7 +71,9 @@ const RegisterForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-      {error && <ErrorMessage message={error} />}
+      {(validationError || error) && (
+        <ErrorMessage message={validationError || error!} />
+      )}
       <div className="flex flex-col">
         <label htmlFor="firstName" className="text-white mb-1">First Name</label>
         <input
@@ -106,7 +135,7 @@ const RegisterForm: React.FC = () => {
           <li className={hasSpecialChar ? "text-green-600" : "text-red-500"}>
             • At least one special character (!@#$%^&* etc.)
           </li>
-          <li className={hasMinLength ? "text-green-600" : "text-red-500"}>
+          <li className={hasMinMaxLength ? "text-green-600" : "text-red-500"}>
             • Minimum 8 characters
           </li>
         </ul>
