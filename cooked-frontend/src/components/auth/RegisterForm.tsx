@@ -28,6 +28,7 @@ const RegisterForm: React.FC = () => {
     hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar && hasMinMaxLength;
   
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setError(null);
     const validation = validateRegistration({
       firstName,
