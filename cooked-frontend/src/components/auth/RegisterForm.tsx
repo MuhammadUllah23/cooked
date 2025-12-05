@@ -29,34 +29,20 @@ const RegisterForm: React.FC = () => {
   
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     setError(null);
+    const validation = validateRegistration({
+      firstName,
+      lastName,
+      email,
+      password,
+      confirmPassword,
+    });
 
-    if (firstName.length > 100) {
-      setValidationError("First name cannot exceed 100 characters.");
+    if (validation) {
+      setValidationError(validation);
       return;
     }
-    if (lastName.length > 100) {
-      setValidationError("Last name cannot exceed 100 characters.");
-      return;
-    }
-
-    if (email.length > 255) {
-      setValidationError("Email cannot exceed 255 characters.");
-      return;
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setValidationError("Please enter a valid email address.");
-      return;
-    }
-
     if (!isPasswordValid) {
       setValidationError("Password does not meet the required criteria.");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setValidationError("Passwords do not match.");
       return;
     }
 
