@@ -2,15 +2,17 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Store, StoreResponse } from "../../api/store";
 import LoadingScreen from "../common/LoadingScreen";
+import { Trash2 } from "lucide-react";
 
 interface StoreListProps {
   stores: StoreResponse[];
   loading: boolean;
   error: string | null;
   onEdit: (store: Store) => void;
+  onDelete: (id: string) => void; 
 }
 
-const StoreList: React.FC<StoreListProps> = ({ stores, loading, error, onEdit, }) => {
+const StoreList: React.FC<StoreListProps> = ({ stores, loading, error, onEdit, onDelete }) => {
   const navigate = useNavigate();
 
   if (loading) {
@@ -44,6 +46,12 @@ const StoreList: React.FC<StoreListProps> = ({ stores, loading, error, onEdit, }
             className="text-sm bg-primary px-3 py-1 rounded hover:bg-primary-hover transition"
           >
             Edit
+          </button>
+          <button
+            onClick={() => onDelete(store.id)}
+            className="p-2 rounded hover:error-dark transition"
+          >
+            <Trash2 size={18} className="text-error" />
           </button>
         </li>
       ))}
